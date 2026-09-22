@@ -2,6 +2,12 @@
 
 这份文档适用于当前博客。项目已经配置 GitHub Actions，每次把 `main` 分支推送到 GitHub 后，网站会自动构建并发布。
 
+当前地址：
+
+- GitHub 仓库：<https://github.com/zhoujiakang/myblog>
+- 在线博客：<https://zhoujiakang.github.io/myblog/>
+- 默认分支：`main`
+
 ## 一、在本地运行博客
 
 进入博客目录：
@@ -68,11 +74,13 @@ pnpm exec hexo clean
 pnpm exec hexo generate
 ```
 
-## 三、第一次上传到 GitHub
+## 三、第一次上传到 GitHub（已完成）
+
+当前项目已经登录 GitHub、创建公开仓库并完成首次部署。下面保留首次配置步骤，供以后迁移电脑或重新创建仓库时参考。
 
 ### 1. 登录 GitHub CLI
 
-当前电脑已经安装 `gh`，但尚未登录。执行：
+当前电脑已经安装 `gh`。如果换电脑后尚未登录，执行：
 
 ```bash
 gh auth login
