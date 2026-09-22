@@ -1,4 +1,4 @@
-import { writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 
 const repository = process.env.GITHUB_REPOSITORY
 if (!repository) {
@@ -7,8 +7,12 @@ if (!repository) {
 
 const [owner, repo] = repository.split('/')
 const isUserSite = repo.toLowerCase() === `${owner}.github.io`.toLowerCase()
-const root = isUserSite ? '/' : `/${repo}/`
-const url = `https://${owner}.github.io${isUserSite ? '' : `/${repo}`}`
+const cnamePath = 'source/CNAME'
+const customDomain = existsSync(cnamePath) ? readFileSync(cnamePath, 'utf8').trim() : ''
+const root = customDomain || isUserSite ? '/' : `/${repo}/`
+const url = customDomain
+  ? `https://${customDomain}`
+  : `https://${owner}.github.io${isUserSite ? '' : `/${repo}`}`
 
 writeFileSync(
   '_config.pages.yml',

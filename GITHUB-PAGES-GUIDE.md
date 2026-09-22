@@ -5,7 +5,8 @@
 当前地址：
 
 - GitHub 仓库：<https://github.com/zhoujiakang/myblog>
-- 在线博客：<https://zhoujiakang.github.io/myblog/>
+- 在线博客：<https://blog.zzzink.cn/>
+- GitHub Pages 备用地址：<https://zhoujiakang.github.io/myblog/>
 - 默认分支：`main`
 
 ## 一、在本地运行博客
@@ -180,4 +181,5 @@ git push
 - 不要提交 `node_modules`、`public` 和 `db.json`，它们已经写入 `.gitignore`。
 - 日常只修改 `source/`、`_config.yml` 和 `_config.butterfly.yml` 等源文件。
 - GitHub Actions 会根据仓库名称自动设置站点路径。
-- 更换域名后，需要同时修改 `_config.yml` 中的 `url`，并在 `source/` 下增加 `CNAME` 文件。
+- 当前自定义域名保存在 `source/CNAME`，部署时会自动切换为根路径。
+- 更换域名时只需修改 `source/CNAME`，部署脚本会自动更新站点 URL 和资源路径。
