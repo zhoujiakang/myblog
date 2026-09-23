@@ -2,8 +2,14 @@
   "name": "hexo-site",
   "version": "0.0.0",
   "private": true,
+  "description": "zzZ 的 Hexo 博客与本地写作客户端",
+  "author": "zzZ",
+  "main": "tools/blog-admin-desktop/main.cjs",
   "scripts": {
     "admin": "node tools/blog-admin/server.mjs",
+    "desktop": "electron .",
+    "desktop:pack": "electron-builder --dir",
+    "desktop:dist": "electron-builder --mac dmg",
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
@@ -31,5 +37,28 @@
     "marked": "^18.0.14",
     "multer": "^2.4.0",
     "sanitize-html": "^2.17.7"
+  },
+  "devDependencies": {
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "cn.zzzink.blogstudio",
+    "productName": "zzZ Blog Studio",
+    "asar": true,
+    "directories": {
+      "output": "tools/blog-admin-desktop/builds"
+    },
+    "files": [
+      "tools/blog-admin-desktop/main.cjs",
+      "tools/blog-admin/server.mjs",
+      "tools/blog-admin/public/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": ["dmg", "dir"]
+    }
   }
 }

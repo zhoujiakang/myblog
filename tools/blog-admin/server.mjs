@@ -11,7 +11,7 @@ import multer from 'multer'
 import sanitizeHtml from 'sanitize-html'
 
 const appDir = dirname(fileURLToPath(import.meta.url))
-const rootDir = resolve(appDir, '../..')
+const rootDir = resolve(process.env.BLOG_PROJECT_DIR || resolve(appDir, '../..'))
 const postsDir = join(rootDir, 'source/_posts')
 const draftsDir = join(rootDir, 'source/_drafts')
 const imageRoot = join(rootDir, 'source/img/posts')
@@ -247,6 +247,8 @@ app.use((error, req, res, next) => {
   res.status(500).json({ error: error.message || '服务器错误' })
 })
 
-app.listen(port, '127.0.0.1', () => {
-  console.log(`Blog Studio: http://127.0.0.1:${port}`)
+const server = app.listen(port, '127.0.0.1', () => {
+  const address = server.address()
+  const actualPort = typeof address === 'object' && address ? address.port : port
+  console.log(`Blog Studio: http://127.0.0.1:${actualPort}`)
 })

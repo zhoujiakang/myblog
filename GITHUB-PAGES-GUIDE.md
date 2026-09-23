@@ -11,6 +11,27 @@
 
 ## 使用本地写作客户端（推荐）
 
+### macOS 桌面应用
+
+启动独立的 Mac 应用窗口：
+
+```bash
+cd /Users/zzz/code/myblog/blog
+pnpm desktop
+```
+
+它会打开 `zzZ Blog Studio` 独立窗口，不使用浏览器。关闭应用时，本地后台会自动停止。
+
+生成可以双击打开的 macOS 应用安装包：
+
+```bash
+pnpm desktop:dist
+```
+
+生成的 `.dmg` 和 `.app` 位于 `tools/blog-admin-desktop/builds/`。首次从打包应用启动时，选择当前博客目录 `/Users/zzz/code/myblog/blog`。
+
+### 浏览器调试方式
+
 进入博客目录并启动客户端：
 
 ```bash
