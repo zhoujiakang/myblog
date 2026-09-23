@@ -52,7 +52,7 @@ tags:
   - Hexo
   - 学习记录
 description: 这里填写文章摘要
-cover: /img/home-hero.jpg
+cover: /img/home-hero-optimized.jpg
 ---
 
 这里开始写正文。
