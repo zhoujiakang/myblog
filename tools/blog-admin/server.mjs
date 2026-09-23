@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { mkdir, readFile, readdir, rename, stat, unlink, writeFile } from 'node:fs/promises'
+import { chmod, mkdir, readFile, readdir, rename, stat, unlink, writeFile } from 'node:fs/promises'
 import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { randomUUID } from 'node:crypto'
@@ -16,9 +16,16 @@ const postsDir = join(rootDir, 'source/_posts')
 const draftsDir = join(rootDir, 'source/_drafts')
 const imageRoot = join(rootDir, 'source/img/posts')
 const publicDir = join(appDir, 'public')
+const studioDir = join(rootDir, '.blog-studio')
+const configDir = resolve(process.env.BLOG_ADMIN_CONFIG_DIR || studioDir)
+const notesPath = join(studioDir, 'notes.json')
+const deepseekConfigPath = join(configDir, 'deepseek.json')
 const port = Number(process.env.BLOG_ADMIN_PORT || 4180)
 
-await Promise.all([mkdir(postsDir, { recursive: true }), mkdir(draftsDir, { recursive: true }), mkdir(imageRoot, { recursive: true })])
+await Promise.all([
+  mkdir(postsDir, { recursive: true }), mkdir(draftsDir, { recursive: true }), mkdir(imageRoot, { recursive: true }),
+  mkdir(studioDir, { recursive: true }), mkdir(configDir, { recursive: true })
+])
 
 const app = express()
 app.disable('x-powered-by')
@@ -60,6 +67,45 @@ function localDate(value = new Date()) {
     hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
   }).formatToParts(date).reduce((all, item) => ({ ...all, [item.type]: item.value }), {})
   return `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute}:${parts.second}`
+}
+
+async function readJson(path, fallback) {
+  try { return JSON.parse(await readFile(path, 'utf8')) } catch (error) {
+    if (error.code === 'ENOENT') return fallback
+    throw error
+  }
+}
+
+async function notes() {
+  const items = await readJson(notesPath, [])
+  return Array.isArray(items) ? items.sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt))) : []
+}
+
+async function saveNotes(items) {
+  await writeFile(notesPath, JSON.stringify(items, null, 2), 'utf8')
+}
+
+function noteSummary(note) {
+  return {
+    id: note.id,
+    title: String(note.title || '').trim() || '未命名随心记',
+    content: String(note.content || ''),
+    createdAt: note.createdAt,
+    updatedAt: note.updatedAt
+  }
+}
+
+async function deepseekConfig() {
+  const config = await readJson(deepseekConfigPath, {})
+  return { apiKey: String(config.apiKey || '').trim() }
+}
+
+function parseAiJson(value) {
+  const clean = String(value || '').trim().replace(/^```json\s*/i, '').replace(/\s*```$/, '')
+  const start = clean.indexOf('{')
+  const end = clean.lastIndexOf('}')
+  if (start < 0 || end < start) throw new Error('AI 没有返回可用的文章结构，请重试')
+  return JSON.parse(clean.slice(start, end + 1))
 }
 
 async function readArticle(filePath) {
@@ -153,6 +199,98 @@ app.get('/api/state', async (req, res, next) => {
     const tags = [...new Set(articles.flatMap(article => article.tags))].sort()
     const categories = [...new Set(articles.flatMap(article => article.categories))].sort()
     res.json({ articles, images, tags, categories, dirty: Boolean(gitStatus.trim()) })
+  } catch (error) { next(error) }
+})
+
+app.get('/api/notes', async (req, res, next) => {
+  try { res.json({ notes: (await notes()).map(noteSummary) }) } catch (error) { next(error) }
+})
+
+app.post('/api/notes', async (req, res, next) => {
+  try {
+    const items = await notes()
+    const now = new Date().toISOString()
+    const note = {
+      id: randomUUID(), title: String(req.body.title || ''), content: String(req.body.content || ''),
+      createdAt: now, updatedAt: now
+    }
+    items.push(note)
+    await saveNotes(items)
+    res.status(201).json(noteSummary(note))
+  } catch (error) { next(error) }
+})
+
+app.put('/api/notes/:id', async (req, res, next) => {
+  try {
+    const items = await notes()
+    const note = items.find(item => item.id === req.params.id)
+    if (!note) return res.status(404).json({ error: '随心记不存在' })
+    note.title = String(req.body.title || '')
+    note.content = String(req.body.content || '')
+    note.updatedAt = new Date().toISOString()
+    await saveNotes(items)
+    res.json(noteSummary(note))
+  } catch (error) { next(error) }
+})
+
+app.delete('/api/notes/:id', async (req, res, next) => {
+  try {
+    const items = await notes()
+    const nextItems = items.filter(item => item.id !== req.params.id)
+    if (nextItems.length === items.length) return res.status(404).json({ error: '随心记不存在' })
+    await saveNotes(nextItems)
+    res.status(204).end()
+  } catch (error) { next(error) }
+})
+
+app.get('/api/deepseek/config', async (req, res, next) => {
+  try {
+    const { apiKey } = await deepseekConfig()
+    res.json({ configured: Boolean(apiKey), model: 'deepseek-chat' })
+  } catch (error) { next(error) }
+})
+
+app.put('/api/deepseek/config', async (req, res, next) => {
+  try {
+    const apiKey = String(req.body.apiKey || '').trim()
+    if (!apiKey) return res.status(400).json({ error: '请输入 DeepSeek API Key' })
+    await writeFile(deepseekConfigPath, JSON.stringify({ apiKey }, null, 2), { encoding: 'utf8', mode: 0o600 })
+    await chmod(deepseekConfigPath, 0o600)
+    res.json({ configured: true })
+  } catch (error) { next(error) }
+})
+
+app.post('/api/deepseek/organize', async (req, res, next) => {
+  try {
+    const { apiKey } = await deepseekConfig()
+    if (!apiKey) return res.status(400).json({ error: '请先在设置中保存 DeepSeek API Key' })
+    const ids = [...new Set(Array.isArray(req.body.noteIds) ? req.body.noteIds.map(String) : [])]
+    if (!ids.length) return res.status(400).json({ error: '请至少选择一条随心记' })
+    const selected = (await notes()).filter(note => ids.includes(note.id))
+    if (!selected.length) return res.status(400).json({ error: '没有找到所选随心记' })
+
+    const source = selected.map((note, index) => `【碎片 ${index + 1}${note.title ? `：${note.title}` : ''}】\n${note.content}`).join('\n\n')
+    const response = await fetch('https://api.deepseek.com/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'deepseek-chat', temperature: 0.7,
+        messages: [
+          {
+            role: 'system',
+            content: '你是中文博客编辑。只能依据用户提供的碎片整理，不得虚构事实、引文或书中内容。保留有价值的个人思考，清晰地区分事实与观点。只返回一个 JSON 对象，不要 Markdown 代码块。JSON 格式为 {"title":"", "description":"", "categories":[""], "tags":[""], "content":"Markdown 正文"}。正文应有自然标题层级，语言像个人博客而非模板化总结。'
+          },
+          { role: 'user', content: `请将以下随心记整理为一篇可继续编辑的博客草稿。\n\n${source}` }
+        ]
+      })
+    })
+    const payload = await response.json().catch(() => ({}))
+    if (!response.ok) throw new Error(payload?.error?.message || 'DeepSeek 请求失败')
+    const article = parseAiJson(payload?.choices?.[0]?.message?.content)
+    res.json({
+      title: String(article.title || '未命名文章'), description: String(article.description || ''),
+      categories: listValue(article.categories), tags: listValue(article.tags), content: String(article.content || '')
+    })
   } catch (error) { next(error) }
 })
 

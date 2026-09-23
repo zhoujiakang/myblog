@@ -6,6 +6,7 @@ node_modules/
 /public/
 /tools/blog-admin-desktop/release*/
 /tools/blog-admin-desktop/builds/
+/.blog-studio/
 .deploy*/
 _multiconfig.yml
 _config.pages.yml

@@ -75,6 +75,7 @@ async function startServer() {
       ...process.env,
       ELECTRON_RUN_AS_NODE: '1',
       BLOG_PROJECT_DIR: projectDir,
+      BLOG_ADMIN_CONFIG_DIR: app.getPath('userData'),
       BLOG_ADMIN_PORT: '0'
     },
     stdio: ['ignore', 'pipe', 'pipe']

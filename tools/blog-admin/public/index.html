@@ -17,20 +17,27 @@
         <span class="local-dot" title="仅在本机运行"></span>
       </header>
 
-      <button class="new-button" id="newArticle"><i data-lucide="plus"></i><span>新建文章</span></button>
+      <div class="mode-tabs" role="tablist" aria-label="工作区">
+        <button class="active" data-mode="notes"><i data-lucide="notebook-pen"></i><span>随心记</span></button>
+        <button data-mode="articles"><i data-lucide="file-text"></i><span>文章</span></button>
+      </div>
 
-      <label class="search-box">
+      <button class="new-button" id="newArticle"><i data-lucide="plus"></i><span>新建文章</span></button>
+      <button class="new-button note-new-button" id="newNote"><i data-lucide="plus"></i><span>记录随心记</span></button>
+
+      <label class="search-box article-controls">
         <i data-lucide="search"></i>
         <input id="articleSearch" type="search" placeholder="搜索文章">
       </label>
 
-      <div class="filter-tabs" role="tablist" aria-label="文章状态">
+      <div class="filter-tabs article-controls" role="tablist" aria-label="文章状态">
         <button class="active" data-filter="all">全部 <span id="allCount">0</span></button>
         <button data-filter="draft">草稿 <span id="draftCount">0</span></button>
         <button data-filter="published">已发布 <span id="publishedCount">0</span></button>
       </div>
 
-      <div class="article-list" id="articleList"></div>
+      <div class="article-list article-controls" id="articleList"></div>
+      <div class="article-list note-controls" id="noteList"></div>
     </aside>
 
     <main class="studio">
@@ -52,6 +59,26 @@
         <h1>开始写一篇文章</h1>
         <button class="primary-button" id="emptyNew"><i data-lucide="plus"></i><span>新建文章</span></button>
       </div>
+
+      <section class="note-studio" id="noteStudio">
+        <header class="note-command-bar">
+          <div>
+            <span class="eyebrow">本地随心记</span>
+            <h1 id="noteName">开始记录</h1>
+          </div>
+          <div class="command-actions">
+            <button class="icon-button" id="openDeepseek" title="DeepSeek 设置"><i data-lucide="sparkles"></i></button>
+            <button class="secondary-button" id="saveNote" disabled><i data-lucide="save"></i><span>保存</span></button>
+            <button class="publish-button" id="organizeNotes"><i data-lucide="wand-sparkles"></i><span>AI 整理为草稿</span></button>
+          </div>
+        </header>
+        <div class="note-editor-wrap">
+          <div class="note-hint"><i data-lucide="quote"></i><span>想到什么就写什么。选择左侧多条随心记后，可以一起交给 AI 整理。</span></div>
+          <input id="noteTitle" class="note-title-input" placeholder="给这条随心记起个标题（可选）" autocomplete="off">
+          <textarea id="noteContent" class="note-content" placeholder="记录摘录、想法、疑问或灵感..." spellcheck="false"></textarea>
+          <div class="note-footer"><span id="noteSaveState">仅保存在本机</span><span id="noteCount">已选择 0 条</span></div>
+        </div>
+      </section>
 
       <form class="editor-form hidden" id="editorForm">
         <section class="article-fields">
@@ -113,6 +140,15 @@
       <label><span>提交说明</span><input id="commitMessage" value="更新博客内容" maxlength="100"></label>
       <div class="publish-summary"><i data-lucide="git-commit-horizontal"></i><span>将构建网站、提交当前改动并推送到 GitHub。</span></div>
       <footer><button class="secondary-button" value="cancel">取消</button><button class="publish-button" id="confirmPublish" value="default"><i data-lucide="send"></i><span>确认发布</span></button></footer>
+    </form>
+  </dialog>
+
+  <dialog id="deepseekDialog">
+    <form method="dialog" class="dialog-form" id="deepseekForm">
+      <header><h2>DeepSeek 设置</h2><button class="icon-button" value="cancel" title="关闭"><i data-lucide="x"></i></button></header>
+      <label><span>DeepSeek API Key</span><input id="deepseekKey" type="password" autocomplete="off" placeholder="sk-..." required></label>
+      <p class="dialog-note">仅保存在这台 Mac 的应用配置中，不会写入博客文件或上传到 GitHub。</p>
+      <footer><button class="secondary-button" value="cancel">取消</button><button class="primary-button" value="default"><i data-lucide="save"></i><span>保存 Key</span></button></footer>
     </form>
   </dialog>
 

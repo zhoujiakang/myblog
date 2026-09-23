@@ -3,13 +3,16 @@ const $$ = selector => [...document.querySelectorAll(selector)]
 
 const state = {
   articles: [], images: [], tags: [], categories: [], activeId: null,
-  filter: 'all', query: '', dirty: false, previewTimer: null
+  notes: [], activeNoteId: null, selectedNoteIds: new Set(), noteDirty: false,
+  mode: 'notes', filter: 'all', query: '', dirty: false, previewTimer: null
 }
 
 const fields = {
   title: $('#title'), status: $('#status'), date: $('#date'), categories: $('#categories'),
   description: $('#description'), tags: $('#tags'), cover: $('#cover'), content: $('#content')
 }
+
+const noteFields = { title: $('#noteTitle'), content: $('#noteContent') }
 
 async function api(url, options = {}) {
   const response = await fetch(url, {
@@ -40,6 +43,157 @@ function setDirty(value) {
   state.dirty = value
   $('#saveState').textContent = value ? '有未保存的修改' : '已保存'
   $('#saveState').classList.toggle('unsaved', value)
+}
+
+function setNoteDirty(value) {
+  state.noteDirty = value
+  $('#noteSaveState').textContent = value ? '有未保存的修改' : '仅保存在本机'
+  $('#noteSaveState').classList.toggle('unsaved', value)
+}
+
+function notePayload() {
+  return { title: noteFields.title.value.trim(), content: noteFields.content.value }
+}
+
+function renderNotes() {
+  const list = $('#noteList')
+  if (!state.notes.length) {
+    list.innerHTML = '<div class="list-empty">还没有随心记</div>'
+  } else {
+    list.innerHTML = state.notes.map(note => `
+      <button class="note-item ${note.id === state.activeNoteId ? 'active' : ''}" data-id="${note.id}">
+        <input type="checkbox" data-note-check="${note.id}" ${state.selectedNoteIds.has(note.id) ? 'checked' : ''} aria-label="选择随心记">
+        <strong>${escapeHtml(note.title)}</strong>
+        <span>${escapeHtml(note.content.replace(/\s+/g, ' ').slice(0, 60) || '空白笔记')}</span>
+      </button>`).join('')
+    $$('.note-item').forEach(button => button.addEventListener('click', event => {
+      if (event.target.matches('[data-note-check]')) return
+      selectNote(button.dataset.id)
+    }))
+    $$('[data-note-check]').forEach(input => input.addEventListener('change', () => {
+      if (input.checked) state.selectedNoteIds.add(input.dataset.noteCheck)
+      else state.selectedNoteIds.delete(input.dataset.noteCheck)
+      updateNoteSelection()
+    }))
+  }
+  updateNoteSelection()
+}
+
+function updateNoteSelection() {
+  $('#noteCount').textContent = `已选择 ${state.selectedNoteIds.size} 条`
+  $('#organizeNotes').disabled = state.selectedNoteIds.size === 0
+}
+
+async function loadNotes(selectFirst = false) {
+  try {
+    const data = await api('/api/notes')
+    state.notes = data.notes
+    state.selectedNoteIds = new Set([...state.selectedNoteIds].filter(id => state.notes.some(note => note.id === id)))
+    renderNotes()
+    if (selectFirst && state.notes.length) await selectNote(state.notes[0].id)
+  } catch (error) { toast(error.message, true) }
+}
+
+function showNote(note) {
+  state.activeNoteId = note.id
+  $('#noteName').textContent = note.title || '未命名随心记'
+  noteFields.title.value = note.title || ''
+  noteFields.content.value = note.content || ''
+  $('#saveNote').disabled = false
+  setNoteDirty(false)
+  renderNotes()
+}
+
+async function selectNote(id) {
+  if (state.noteDirty && !confirm('当前随心记尚未保存，仍要切换吗？')) return
+  const note = state.notes.find(item => item.id === id)
+  if (note) showNote(note)
+}
+
+async function createNote() {
+  try {
+    const note = await api('/api/notes', { method: 'POST', body: JSON.stringify({}) })
+    await loadNotes()
+    showNote(note)
+    noteFields.content.focus()
+    toast('已新建随心记')
+  } catch (error) { toast(error.message, true) }
+}
+
+async function saveNote() {
+  if (!state.activeNoteId) return false
+  $('#saveNote').disabled = true
+  $('#noteSaveState').textContent = '保存中...'
+  try {
+    const note = await api(`/api/notes/${encodeURIComponent(state.activeNoteId)}`, {
+      method: 'PUT', body: JSON.stringify(notePayload())
+    })
+    await loadNotes()
+    showNote(note)
+    toast('随心记已保存')
+    return true
+  } catch (error) {
+    toast(error.message, true)
+    setNoteDirty(true)
+    return false
+  } finally { $('#saveNote').disabled = false }
+}
+
+async function showDeepseekSettings() {
+  try {
+    const config = await api('/api/deepseek/config')
+    $('#deepseekKey').value = ''
+    $('#deepseekKey').placeholder = config.configured ? '已配置，输入新 Key 可覆盖' : 'sk-...'
+    $('#deepseekDialog').showModal()
+    requestAnimationFrame(() => $('#deepseekKey').focus())
+  } catch (error) { toast(error.message, true) }
+}
+
+async function saveDeepseekSettings(event) {
+  event.preventDefault()
+  try {
+    await api('/api/deepseek/config', { method: 'PUT', body: JSON.stringify({ apiKey: $('#deepseekKey').value }) })
+    $('#deepseekDialog').close()
+    toast('DeepSeek API Key 已保存在本机')
+  } catch (error) { toast(error.message, true) }
+}
+
+async function organizeNotes() {
+  if (state.noteDirty && !await saveNote()) return
+  const button = $('#organizeNotes')
+  button.disabled = true
+  button.querySelector('span').textContent = 'AI 整理中...'
+  try {
+    const draft = await api('/api/deepseek/organize', {
+      method: 'POST', body: JSON.stringify({ noteIds: [...state.selectedNoteIds] })
+    })
+    const article = await api('/api/articles', {
+      method: 'POST', body: JSON.stringify({ ...draft, status: 'draft' })
+    })
+    state.selectedNoteIds.clear()
+    await loadState()
+    switchMode('articles')
+    state.activeId = article.id
+    showEditor(article)
+    renderList()
+    toast('AI 草稿已创建，请人工修改后再发布')
+  } catch (error) { toast(error.message, true) }
+  finally {
+    button.disabled = false
+    button.querySelector('span').textContent = 'AI 整理为草稿'
+    updateNoteSelection()
+  }
+}
+
+function switchMode(mode) {
+  if (mode === state.mode) return
+  if (state.mode === 'notes' && state.noteDirty && !confirm('当前随心记尚未保存，仍要切换吗？')) return
+  if (state.mode === 'articles' && state.dirty && !confirm('当前文章尚未保存，仍要切换吗？')) return
+  state.mode = mode
+  $('.app-shell').classList.toggle('notes-mode', mode === 'notes')
+  $$('.mode-tabs button').forEach(button => button.classList.toggle('active', button.dataset.mode === mode))
+  if (mode === 'notes' && !state.activeNoteId) createNote()
+  if (mode === 'articles' && !state.activeId && state.articles.length) selectArticle(state.articles[0].id)
 }
 
 function renderCounts() {
@@ -284,6 +438,11 @@ Object.values(fields).forEach(field => field.addEventListener('input', () => {
 
 $('#newArticle').addEventListener('click', openNewDialog)
 $('#emptyNew').addEventListener('click', openNewDialog)
+$('#newNote').addEventListener('click', createNote)
+$('#saveNote').addEventListener('click', saveNote)
+$('#organizeNotes').addEventListener('click', organizeNotes)
+$('#openDeepseek').addEventListener('click', showDeepseekSettings)
+$('#deepseekForm').addEventListener('submit', saveDeepseekSettings)
 $('#newForm').addEventListener('submit', createArticle)
 $('#saveArticle').addEventListener('click', saveArticle)
 $('#deleteArticle').addEventListener('click', deleteArticle)
@@ -293,6 +452,7 @@ $$('.filter-tabs button').forEach(button => button.addEventListener('click', () 
   $$('.filter-tabs button').forEach(item => item.classList.toggle('active', item === button))
   renderList()
 }))
+$$('.mode-tabs button').forEach(button => button.addEventListener('click', () => switchMode(button.dataset.mode)))
 $$('[data-format]').forEach(button => button.addEventListener('click', () => formats[button.dataset.format]()))
 $$('[data-view]').forEach(button => button.addEventListener('click', () => {
   $$('.view-switch button').forEach(item => item.classList.toggle('active', item === button))
@@ -304,13 +464,17 @@ $('#imageInput').addEventListener('change', event => uploadImage(event.target.fi
 $('#openPublish').addEventListener('click', () => $('#publishDialog').showModal())
 $('#publishForm').addEventListener('submit', event => { event.preventDefault(); publish() })
 
+Object.values(noteFields).forEach(field => field.addEventListener('input', () => setNoteDirty(true)))
+
 document.addEventListener('keydown', event => {
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's') {
     event.preventDefault()
     saveArticle()
   }
 })
-window.addEventListener('beforeunload', event => { if (state.dirty) event.preventDefault() })
+window.addEventListener('beforeunload', event => { if (state.dirty || state.noteDirty) event.preventDefault() })
 
 window.lucide?.createIcons()
+$('.app-shell').classList.add('notes-mode')
 loadState(true)
+loadNotes(true)
