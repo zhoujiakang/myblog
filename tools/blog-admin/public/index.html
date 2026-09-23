@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>zzZ Blog Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="library">
+      <header class="brand-row">
+        <div class="brand-mark">z</div>
+        <div><strong>zzZ Blog Studio</strong><span>本地工作区</span></div>
+        <span class="local-dot" title="仅在本机运行"></span>
+      </header>
+
+      <button class="new-button" id="newArticle"><i data-lucide="plus"></i><span>新建文章</span></button>
+
+      <label class="search-box">
+        <i data-lucide="search"></i>
+        <input id="articleSearch" type="search" placeholder="搜索文章">
+      </label>
+
+      <div class="filter-tabs" role="tablist" aria-label="文章状态">
+        <button class="active" data-filter="all">全部 <span id="allCount">0</span></button>
+        <button data-filter="draft">草稿 <span id="draftCount">0</span></button>
+        <button data-filter="published">已发布 <span id="publishedCount">0</span></button>
+      </div>
+
+      <div class="article-list" id="articleList"></div>
+    </aside>
+
+    <main class="studio">
+      <header class="command-bar">
+        <div class="document-state">
+          <span id="documentName">未选择文章</span>
+          <span class="save-state" id="saveState">就绪</span>
+        </div>
+        <div class="command-actions">
+          <a class="icon-button" href="https://blog.zzzink.cn" target="_blank" rel="noreferrer" title="打开博客"><i data-lucide="external-link"></i></a>
+          <button class="icon-button danger-quiet" id="deleteArticle" title="删除文章" disabled><i data-lucide="trash-2"></i></button>
+          <button class="secondary-button" id="saveArticle" disabled><i data-lucide="save"></i><span>保存</span></button>
+          <button class="publish-button" id="openPublish"><i data-lucide="send"></i><span>发布到 GitHub</span></button>
+        </div>
+      </header>
+
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon"><i data-lucide="file-pen-line"></i></div>
+        <h1>开始写一篇文章</h1>
+        <button class="primary-button" id="emptyNew"><i data-lucide="plus"></i><span>新建文章</span></button>
+      </div>
+
+      <form class="editor-form hidden" id="editorForm">
+        <section class="article-fields">
+          <input class="title-input" id="title" name="title" placeholder="文章标题" autocomplete="off">
+
+          <div class="metadata-grid">
+            <label><span>状态</span><select id="status"><option value="draft">草稿</option><option value="published">已发布</option></select></label>
+            <label><span>日期</span><input id="date" type="text" placeholder="YYYY-MM-DD HH:mm:ss"></label>
+            <label><span>分类</span><input id="categories" list="categoryOptions" placeholder="多个分类用逗号分隔"><datalist id="categoryOptions"></datalist></label>
+          </div>
+
+          <label class="wide-field"><span>摘要</span><input id="description" placeholder="文章摘要"></label>
+
+          <div class="tag-cover-row">
+            <label class="wide-field"><span>标签</span><input id="tags" list="tagOptions" placeholder="多个标签用逗号分隔"><datalist id="tagOptions"></datalist><span class="tag-suggestions" id="tagSuggestions"></span></label>
+            <label class="wide-field"><span>封面</span><select id="cover"><option value="">使用默认封面</option></select></label>
+            <div class="cover-thumb" id="coverThumb"><i data-lucide="image"></i></div>
+          </div>
+        </section>
+
+        <section class="writing-area">
+          <div class="editor-toolbar">
+            <div class="format-actions">
+              <button type="button" data-format="bold" title="粗体"><i data-lucide="bold"></i></button>
+              <button type="button" data-format="italic" title="斜体"><i data-lucide="italic"></i></button>
+              <button type="button" data-format="heading" title="标题"><i data-lucide="heading-2"></i></button>
+              <button type="button" data-format="link" title="链接"><i data-lucide="link"></i></button>
+              <button type="button" data-format="code" title="代码块"><i data-lucide="code-2"></i></button>
+              <button type="button" id="uploadImage" title="上传并插入图片"><i data-lucide="image-plus"></i></button>
+              <input id="imageInput" type="file" accept="image/*" hidden>
+            </div>
+            <div class="view-switch" role="group" aria-label="编辑视图">
+              <button type="button" class="active" data-view="write" title="编辑"><i data-lucide="pen-line"></i></button>
+              <button type="button" data-view="split" title="分栏"><i data-lucide="columns-2"></i></button>
+              <button type="button" data-view="preview" title="预览"><i data-lucide="eye"></i></button>
+            </div>
+          </div>
+          <div class="workspace view-write" id="workspace">
+            <textarea id="content" spellcheck="false" placeholder="在这里写 Markdown..."></textarea>
+            <article class="markdown-preview" id="preview"></article>
+          </div>
+        </section>
+      </form>
+    </main>
+  </div>
+
+  <dialog id="newDialog">
+    <form method="dialog" class="dialog-form" id="newForm">
+      <header><h2>新建文章</h2><button class="icon-button" value="cancel" title="关闭"><i data-lucide="x"></i></button></header>
+      <label><span>标题</span><input id="newTitle" required autofocus placeholder="文章标题"></label>
+      <label><span>初始状态</span><select id="newStatus"><option value="draft">草稿</option><option value="published">已发布</option></select></label>
+      <footer><button class="secondary-button" value="cancel">取消</button><button class="primary-button" id="createArticle" value="default">创建</button></footer>
+    </form>
+  </dialog>
+
+  <dialog id="publishDialog">
+    <form method="dialog" class="dialog-form" id="publishForm">
+      <header><h2>发布到 GitHub</h2><button class="icon-button" value="cancel" title="关闭"><i data-lucide="x"></i></button></header>
+      <label><span>提交说明</span><input id="commitMessage" value="更新博客内容" maxlength="100"></label>
+      <div class="publish-summary"><i data-lucide="git-commit-horizontal"></i><span>将构建网站、提交当前改动并推送到 GitHub。</span></div>
+      <footer><button class="secondary-button" value="cancel">取消</button><button class="publish-button" id="confirmPublish" value="default"><i data-lucide="send"></i><span>确认发布</span></button></footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
