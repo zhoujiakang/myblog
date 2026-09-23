@@ -5,6 +5,8 @@ const { join, resolve } = require('node:path')
 
 const isDev = !app.isPackaged
 const bundledServer = join(app.getAppPath(), 'tools/blog-admin/server.mjs')
+// This is a personal, single-blog app rather than a multi-project editor.
+const fixedProjectDir = resolve('/Users/zzz/code/myblog/blog')
 let projectDir
 let serverProcess
 let mainWindow
@@ -13,33 +15,11 @@ function looksLikeBlog(dir) {
   return existsSync(join(dir, 'package.json')) && existsSync(join(dir, 'source'))
 }
 
-function projectCandidates() {
-  return [
-    process.env.BLOG_PROJECT_DIR,
-    isDev ? resolve(__dirname, '../..') : null,
-    process.cwd()
-  ].filter(Boolean).map(item => resolve(item))
-}
-
-async function chooseProject() {
-  const candidate = projectCandidates().find(looksLikeBlog)
-  if (candidate) return candidate
-
-  const result = await dialog.showOpenDialog({
-    title: '选择 Hexo 博客目录',
-    message: '请选择包含 package.json 和 source 文件夹的 Hexo 博客目录。',
-    properties: ['openDirectory', 'createDirectory']
-  })
-  if (result.canceled || !result.filePaths[0]) return null
-  if (!looksLikeBlog(result.filePaths[0])) {
-    await dialog.showMessageBox({
-      type: 'error',
-      title: '不是 Hexo 博客目录',
-      message: '选择的目录缺少 package.json 或 source 文件夹。'
-    })
-    return chooseProject()
+function getProjectDir() {
+  if (!looksLikeBlog(fixedProjectDir)) {
+    throw new Error(`绑定的博客目录不可用：${fixedProjectDir}`)
   }
-  return result.filePaths[0]
+  return fixedProjectDir
 }
 
 function waitForServer(child) {
@@ -66,8 +46,7 @@ function waitForServer(child) {
 }
 
 async function startServer() {
-  projectDir = await chooseProject()
-  if (!projectDir) return null
+  projectDir = getProjectDir()
   const serverPath = isDev ? join(projectDir, 'tools/blog-admin/server.mjs') : bundledServer
   serverProcess = spawn(process.execPath, [serverPath], {
     cwd: projectDir,
