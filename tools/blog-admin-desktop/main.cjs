@@ -1,12 +1,11 @@
 const { app, BrowserWindow, dialog, Menu, shell } = require('electron')
-const { spawn } = require('node:child_process')
+const { spawn, spawnSync } = require('node:child_process')
 const { existsSync } = require('node:fs')
-const { join, resolve } = require('node:path')
+const { cp, mkdir, symlink } = require('node:fs/promises')
+const { dirname, join, resolve } = require('node:path')
 
 const isDev = !app.isPackaged
 const bundledServer = join(app.getAppPath(), 'tools/blog-admin/server.mjs')
-// This is a personal, single-blog app rather than a multi-project editor.
-const fixedProjectDir = resolve('/Users/zzz/code/myblog/blog')
 let projectDir
 let serverProcess
 let mainWindow
@@ -15,11 +14,26 @@ function looksLikeBlog(dir) {
   return existsSync(join(dir, 'package.json')) && existsSync(join(dir, 'source'))
 }
 
-function getProjectDir() {
-  if (!looksLikeBlog(fixedProjectDir)) {
-    throw new Error(`绑定的博客目录不可用：${fixedProjectDir}`)
+async function getProjectDir() {
+  const userProjectDir = join(app.getPath('userData'), 'blog')
+  if (looksLikeBlog(userProjectDir)) return userProjectDir
+  if (existsSync(userProjectDir)) {
+    throw new Error(`应用博客目录不完整：${userProjectDir}`)
   }
-  return fixedProjectDir
+
+  const templateDir = isDev
+    ? resolve(__dirname, '../blog-template')
+    : join(process.resourcesPath, 'blog-template')
+  if (!looksLikeBlog(templateDir)) throw new Error('应用内置博客模板缺失，请重新安装应用')
+
+  await mkdir(dirname(userProjectDir), { recursive: true })
+  await cp(templateDir, userProjectDir, { recursive: true })
+  // Hexo looks for themes and plugins from the blog's node_modules directory.
+  await symlink(join(app.getAppPath(), 'node_modules'), join(userProjectDir, 'node_modules'))
+
+  const git = spawnSync('git', ['init', '--initial-branch=main'], { cwd: userProjectDir, stdio: 'ignore' })
+  if (git.error || git.status !== 0) throw new Error('无法初始化博客的本地 Git 仓库')
+  return userProjectDir
 }
 
 function waitForServer(child) {
@@ -46,9 +60,8 @@ function waitForServer(child) {
 }
 
 async function startServer() {
-  projectDir = getProjectDir()
-  const serverPath = isDev ? join(projectDir, 'tools/blog-admin/server.mjs') : bundledServer
-  serverProcess = spawn(process.execPath, [serverPath], {
+  projectDir = await getProjectDir()
+  serverProcess = spawn(process.execPath, [bundledServer], {
     cwd: projectDir,
     env: {
       ...process.env,

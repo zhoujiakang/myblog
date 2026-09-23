@@ -191,6 +191,11 @@ function run(command, args) {
   })
 }
 
+function runHexo(args) {
+  const hexoBin = resolve(appDir, '../../node_modules/hexo/bin/hexo')
+  return run(process.execPath, [hexoBin, ...args])
+}
+
 app.get('/api/state', async (req, res, next) => {
   try {
     const [articles, images, gitStatus] = await Promise.all([
@@ -366,8 +371,8 @@ app.post('/api/publish', async (req, res, next) => {
   if (publishing) return res.status(409).json({ error: '发布任务正在运行' })
   publishing = true
   try {
-    await run('pnpm', ['exec', 'hexo', 'clean'])
-    await run('pnpm', ['exec', 'hexo', 'generate'])
+    await runHexo(['clean'])
+    await runHexo(['generate'])
     await run('git', ['add', '-A'])
     const staged = await run('git', ['diff', '--cached', '--name-only'])
     if (staged.trim()) await run('git', ['commit', '-m', String(req.body.message || '更新博客内容').slice(0, 100)])

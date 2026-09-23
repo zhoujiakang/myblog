@@ -1,0 +1,24 @@
+nav:
+  logo:
+  display_title: true
+  fixed: true
+menu:
+  首页: / || fas fa-home
+  文章 || fas fa-book:
+    归档: /archives/ || fas fa-archive
+    标签: /tags/ || fas fa-tags
+    分类: /categories/ || fas fa-folder-open
+  关于: /about/ || fas fa-user
+favicon:
+avatar:
+  img:
+  effect: false
+disable_top_img: false
+default_top_img:
+index_img:
+background: '#10131a'
+cover:
+  index_enable: true
+  aside_enable: true
+  archives_enable: true
+footer_img: false

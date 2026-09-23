@@ -1,0 +1,15 @@
+{
+  "name": "my-blog",
+  "private": true,
+  "description": "由 zzZ Blog Studio 创建的 Hexo 博客",
+  "dependencies": {
+    "hexo": "^8.1.2",
+    "hexo-theme-butterfly": "^5.7.0",
+    "hexo-renderer-marked": "^7.0.0",
+    "hexo-renderer-stylus": "^3.0.0",
+    "hexo-generator-index": "^4.0.0",
+    "hexo-generator-archive": "^2.0.0",
+    "hexo-generator-category": "^2.0.0",
+    "hexo-generator-tag": "^2.0.0"
+  }
+}

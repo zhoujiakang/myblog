@@ -1,0 +1,9 @@
+{
+  "name": "my-blog",
+  "private": true,
+  "description": "由 zzZ Blog Studio 创建的 Hexo 博客",
+  "dependencies": {
+    "hexo": "8.1.2",
+    "hexo-theme-butterfly": "5.7.0"
+  }
+}

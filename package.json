@@ -49,6 +49,12 @@
     "directories": {
       "output": "tools/blog-admin-desktop/builds"
     },
+    "extraResources": [
+      {
+        "from": "tools/blog-template",
+        "to": "blog-template"
+      }
+    ],
     "files": [
       "tools/blog-admin-desktop/main.cjs",
       "tools/blog-admin/server.mjs",
