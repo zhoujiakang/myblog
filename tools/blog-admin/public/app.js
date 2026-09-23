@@ -463,6 +463,7 @@ $('#uploadImage').addEventListener('click', () => $('#imageInput').click())
 $('#imageInput').addEventListener('change', event => uploadImage(event.target.files[0]))
 $('#openPublish').addEventListener('click', () => $('#publishDialog').showModal())
 $('#publishForm').addEventListener('submit', event => { event.preventDefault(); publish() })
+$$('[data-close-dialog]').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()))
 
 Object.values(noteFields).forEach(field => field.addEventListener('input', () => setNoteDirty(true)))
 

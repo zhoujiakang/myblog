@@ -127,28 +127,28 @@
 
   <dialog id="newDialog">
     <form method="dialog" class="dialog-form" id="newForm">
-      <header><h2>新建文章</h2><button class="icon-button" value="cancel" title="关闭"><i data-lucide="x"></i></button></header>
+      <header><h2>新建文章</h2><button class="icon-button" type="button" data-close-dialog title="关闭"><i data-lucide="x"></i></button></header>
       <label><span>标题</span><input id="newTitle" required autofocus placeholder="文章标题"></label>
       <label><span>初始状态</span><select id="newStatus"><option value="draft">草稿</option><option value="published">已发布</option></select></label>
-      <footer><button class="secondary-button" value="cancel">取消</button><button class="primary-button" id="createArticle" value="default">创建</button></footer>
+      <footer><button class="secondary-button" type="button" data-close-dialog>取消</button><button class="primary-button" id="createArticle" value="default">创建</button></footer>
     </form>
   </dialog>
 
   <dialog id="publishDialog">
     <form method="dialog" class="dialog-form" id="publishForm">
-      <header><h2>发布到 GitHub</h2><button class="icon-button" value="cancel" title="关闭"><i data-lucide="x"></i></button></header>
+      <header><h2>发布到 GitHub</h2><button class="icon-button" type="button" data-close-dialog title="关闭"><i data-lucide="x"></i></button></header>
       <label><span>提交说明</span><input id="commitMessage" value="更新博客内容" maxlength="100"></label>
       <div class="publish-summary"><i data-lucide="git-commit-horizontal"></i><span>将构建网站、提交当前改动并推送到 GitHub。</span></div>
-      <footer><button class="secondary-button" value="cancel">取消</button><button class="publish-button" id="confirmPublish" value="default"><i data-lucide="send"></i><span>确认发布</span></button></footer>
+      <footer><button class="secondary-button" type="button" data-close-dialog>取消</button><button class="publish-button" id="confirmPublish" value="default"><i data-lucide="send"></i><span>确认发布</span></button></footer>
     </form>
   </dialog>
 
   <dialog id="deepseekDialog">
     <form method="dialog" class="dialog-form" id="deepseekForm">
-      <header><h2>DeepSeek 设置</h2><button class="icon-button" value="cancel" title="关闭"><i data-lucide="x"></i></button></header>
+      <header><h2>DeepSeek 设置</h2><button class="icon-button" type="button" data-close-dialog title="关闭"><i data-lucide="x"></i></button></header>
       <label><span>DeepSeek API Key</span><input id="deepseekKey" type="password" autocomplete="off" placeholder="sk-..." required></label>
       <p class="dialog-note">仅保存在这台 Mac 的应用配置中，不会写入博客文件或上传到 GitHub。</p>
-      <footer><button class="secondary-button" value="cancel">取消</button><button class="primary-button" value="default"><i data-lucide="save"></i><span>保存 Key</span></button></footer>
+      <footer><button class="secondary-button" type="button" data-close-dialog>取消</button><button class="primary-button" value="default"><i data-lucide="save"></i><span>保存 Key</span></button></footer>
     </form>
   </dialog>
 
