@@ -107,6 +107,11 @@ select {
   font-family: "Maple Mono NF CN Web", "PingFang SC", sans-serif;
 }
 
+.avatar-img img,
+.avatar-img img:hover {
+  transform: none;
+}
+
 #recent-posts > .recent-post-item:hover, .card-widget:hover { border-color: rgba(240, 161, 142, .35); transform: translateY(-2px); transition: transform .25s ease, border-color .25s ease; }
 #footer { position: relative; }
 #footer::before { background: rgba(10, 11, 16, .72); }
