@@ -113,8 +113,38 @@ select {
 }
 
 #recent-posts > .recent-post-item:hover, .card-widget:hover { border-color: rgba(240, 161, 142, .35); transform: translateY(-2px); transition: transform .25s ease, border-color .25s ease; }
-#footer { position: relative; }
-#footer::before { background: rgba(10, 11, 16, .72); }
+#footer {
+  position: relative;
+  overflow: hidden;
+  background-color: #111318;
+  isolation: isolate;
+}
+
+#footer::before {
+  z-index: 1;
+  background: rgba(10, 11, 16, .72);
+}
+
+#footer::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: url('/img/home-hero-placeholder.jpg') bottom center / cover no-repeat;
+  content: '';
+  opacity: 1;
+  filter: blur(8px) saturate(.9);
+  transform: scale(1.04);
+  transition: opacity .65s ease;
+  pointer-events: none;
+}
+
+#footer.footer-ready::after {
+  opacity: 0;
+}
+
+#footer > * {
+  z-index: 2;
+}
 .pace .pace-progress { background: linear-gradient(90deg, #8d4a48, #e59a7d, #f5c6a4); }
 #rightside button { background: rgba(25, 25, 32, .82); color: #f0c0ad; }
 
@@ -136,7 +166,8 @@ select {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #page-header.full_page::after {
+  #page-header.full_page::after,
+  #footer::after {
     transition: none;
   }
 }

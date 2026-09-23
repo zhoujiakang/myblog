@@ -11,6 +11,18 @@
     }
   }
 
+  const footer = document.querySelector('#footer')
+  if (footer) {
+    const match = footer.style.backgroundImage.match(/url\(["']?(.+?)["']?\)/)
+    if (match) {
+      const background = new Image()
+      const revealFooter = () => footer.classList.add('footer-ready')
+      background.addEventListener('load', revealFooter, { once: true })
+      background.src = match[1]
+      if (background.complete) revealFooter()
+    }
+  }
+
   const title = document.querySelector('#site-title')
   if (!title || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   const text = title.textContent.trim()
