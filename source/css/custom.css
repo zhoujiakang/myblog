@@ -16,6 +16,37 @@
   background: linear-gradient(180deg, rgba(12, 13, 20, 0.42), rgba(24, 14, 18, 0.70) 62%, rgba(8, 12, 18, 0.84));
 }
 
+#page-header.full_page::before {
+  z-index: 1;
+}
+
+#page-header.full_page {
+  overflow: hidden;
+}
+
+#page-header.full_page::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: url('/img/home-hero-placeholder.jpg') center / cover no-repeat;
+  content: '';
+  opacity: 1;
+  filter: blur(10px) saturate(.9);
+  transform: scale(1.035);
+  transition: opacity .65s ease;
+  pointer-events: none;
+}
+
+#page-header.full_page.hero-ready::after {
+  opacity: 0;
+}
+
+#page-header.full_page > #nav,
+#page-header.full_page > #site-info,
+#page-header.full_page > #scroll-down {
+  z-index: 2;
+}
+
 #web_bg {
   filter: brightness(0.46) saturate(0.82);
 }
@@ -97,4 +128,10 @@ select {
     min-height: 520px;
   }
   #nav { background: rgba(12, 13, 18, .35); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #page-header.full_page::after {
+    transition: none;
+  }
 }
