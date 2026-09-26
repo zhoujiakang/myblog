@@ -1,7 +1,11 @@
-# zzZ 的 Hexo 博客
+# zzZ 的个人博客
 
-使用 Hexo 8 和 Butterfly 5 构建的个人博客。
+这是由 Hexo 生成的纯静态博客。GitHub Pages 直接发布仓库根目录，不需要在部署时安装 Node.js 或 Hexo。
 
 在线地址：<https://blog.zzzink.cn/>
 
-本地写作、GitHub 上传和 GitHub Pages 发布步骤请查看 [GITHUB-PAGES-GUIDE.md](./GITHUB-PAGES-GUIDE.md)。
+本地预览：
+
+```bash
+python3 -m http.server 4001
+```

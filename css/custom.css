@@ -1,4 +1,24 @@
 :root {
+  --font-family: "Maple Mono NF CN Web", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+@font-face {
+  font-family: "Maple Mono NF CN Web";
+  src: url("/fonts/MapleMono-NF-CN-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Maple Mono NF CN Web";
+  src: url("/fonts/MapleMono-NF-CN-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
   --card-bg: rgba(22, 23, 30, 0.78);
   --font-color: #eee8e7;
   --text-highlight-color: #f0a18e;
@@ -154,7 +174,7 @@ select {
 
 ::selection {
   color: #fff;
-  background: #167d6a;
+  background: #a9574d;
 }
 
 @media (max-width: 768px) {
