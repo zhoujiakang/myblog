@@ -79,6 +79,14 @@
   font-family: "Maple Mono NF CN Web", "PingFang SC", sans-serif;
   letter-spacing: 0;
   text-shadow: 0 3px 24px rgba(0, 0, 0, 0.35);
+  background: transparent !important;
+}
+
+#page-header.full_page #site-title,
+#page-header.full_page #site-title::before,
+#page-header.full_page #site-title::after,
+#page-header.full_page #site-title span {
+  background-color: transparent !important;
 }
 
 #page-header.full_page #site-info { top: 48%; }
@@ -174,7 +182,7 @@ select {
 
 ::selection {
   color: #fff;
-  background: #a9574d;
+  background: #a9574d !important;
 }
 
 @media (max-width: 768px) {
