@@ -2,14 +2,9 @@
   "name": "hexo-site",
   "version": "0.0.0",
   "private": true,
-  "description": "zzZ 的 Hexo 博客与本地写作客户端",
+  "description": "zzZ 的 Hexo 博客",
   "author": "zzZ",
-  "main": "tools/blog-admin-desktop/main.cjs",
   "scripts": {
-    "admin": "node tools/blog-admin/server.mjs",
-    "desktop": "electron .",
-    "desktop:pack": "electron-builder --dir",
-    "desktop:dist": "electron-builder --mac dmg",
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
@@ -19,8 +14,6 @@
     "version": "8.1.2"
   },
   "dependencies": {
-    "express": "^5.2.1",
-    "gray-matter": "^4.0.3",
     "hexo": "^8.0.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
@@ -33,38 +26,6 @@
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-theme-butterfly": "^5.7.0",
-    "hexo-theme-landscape": "^1.0.0",
-    "marked": "^18.0.14",
-    "multer": "^2.4.0",
-    "sanitize-html": "^2.17.7"
-  },
-  "devDependencies": {
-    "electron": "^44.4.5",
-    "electron-builder": "^26.15.3"
-  },
-  "build": {
-    "appId": "cn.zzzink.blogstudio",
-    "productName": "zzZ Blog Studio",
-    "asar": true,
-    "directories": {
-      "output": "tools/blog-admin-desktop/builds"
-    },
-    "extraResources": [
-      {
-        "from": "tools/blog-template",
-        "to": "blog-template"
-      }
-    ],
-    "files": [
-      "tools/blog-admin-desktop/main.cjs",
-      "tools/blog-admin/server.mjs",
-      "tools/blog-admin/public/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
-    "mac": {
-      "category": "public.app-category.productivity",
-      "target": ["dmg", "dir"]
-    }
+    "hexo-theme-landscape": "^1.0.0"
   }
 }
