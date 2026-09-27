@@ -42,6 +42,7 @@
 
 #page-header.full_page {
   overflow: hidden;
+  background-color: #111318;
 }
 
 #page-header.full_page::after {
