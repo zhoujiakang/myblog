@@ -1,0 +1,21 @@
+{
+  "title": "Zzz技术小筑",
+  "subtitle": "学习笔记",
+  "avatar": "Z",
+  "bio": "Java 后端学习者 · 探索 Agent",
+  "eyebrow": "LEARN · BUILD · SHARE",
+  "headline": "在学习中积累，",
+  "headlineEmphasis": "在实践中理解。",
+  "description": "以 Java 后端开发为起点，记录代码里的问题、实践中的思考，也探索 Agent 能做些什么。把每一次学懂的东西，留在这里。",
+  "author": "Zzz",
+  "about": "我是 Zzz，一名正在学习 Java 后端开发的学生。平时主要用 Java 写代码，也在学习和使用 MySQL、Redis。最近开始探索 Agent，希望把新的想法写成代码，在动手的过程中慢慢理解它们。",
+  "email": "",
+  "github": "",
+  "skills": [
+    "Java",
+    "MySQL",
+    "Redis"
+  ],
+  "groups": [],
+  "status": "学生 · Java 后端学习中"
+}

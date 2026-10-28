@@ -1,0 +1,33 @@
+{
+  "name": "backend-notes-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite --mode editor --host 127.0.0.1",
+    "dev:public": "vite --mode public --host 127.0.0.1",
+    "build": "vue-tsc --noEmit && vite build --mode public",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test test/*.test.mjs",
+    "verify:public": "node scripts/verify-public.mjs",
+    "format": "prettier --write src server test scripts vite.config.mjs config .github README.md"
+  },
+  "dependencies": {
+    "vue": "^3.5.0",
+    "vue-router": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.11.1",
+    "markdown-it": "^14.1.0",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.0",
+    "vite": "^7.0.0",
+    "vue-tsc": "^3.1.0"
+  }
+}
