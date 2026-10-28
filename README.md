@@ -93,6 +93,8 @@ Markdown 原始 HTML 不会执行；代码块支持语法高亮和复制，目�
 
 ## 部署到 GitHub Pages
 
+当前自定义域名为 `blog.zzzink.cn`，GitHub Pages 使用 GitHub Actions 发布。域名绑定在仓库的 Pages 设置中维护，`public/CNAME` 会随构建复制到产物。切换域名后需要重新构建，以便 Pages 元数据生成正确的资源根路径。
+
 **将这个 `blog/` 目录作为独立 GitHub 仓库的根目录。** 工作流位于其 `.github/workflows/deploy.yml`，默认部署 main 分支。
 
 首次提交示例（将 `<仓库地址>` 替换为自己的地址）：
