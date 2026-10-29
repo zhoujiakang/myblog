@@ -69,6 +69,8 @@ export function renderMarkdown(body, base = '/') {
   md.renderer.rules.fence = (tokens, idx) => {
     const token = tokens[idx],
       lang = token.info.trim().split(/\s+/)[0];
+    if (lang === 'mermaid')
+      return `<figure class="mermaid-figure"><div class="mermaid">${escape(token.content)}</div></figure>`;
     const code = hljs.getLanguage(lang)
       ? hljs.highlight(token.content, { language: lang }).value
       : escape(token.content);

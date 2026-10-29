@@ -1041,6 +1041,36 @@ a.eyebrow:hover { text-decoration: underline; text-underline-offset: 4px; text-d
 }
 .prose blockquote p + p { margin-top: 10px; }
 
+/* ---------- mermaid 图表 ---------- */
+.mermaid-figure {
+  margin: 26px 0;
+  padding: 18px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow-x: auto;
+}
+.mermaid-figure .mermaid {
+  display: flex;
+  justify-content: center;
+}
+.mermaid-figure .mermaid:not([data-rendered]) {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+.mermaid-figure .mermaid[data-error] {
+  display: block;
+  max-height: none;
+  opacity: 1;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre;
+  color: var(--text-2);
+}
+.mermaid-figure svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
 .code-block {
   margin: 26px 0;
   border: 1px solid var(--border);

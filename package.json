@@ -16,6 +16,7 @@
     "format": "prettier --write src server test scripts vite.config.mjs config .github README.md"
   },
   "dependencies": {
+    "mermaid": "^12.2.0",
     "vue": "^3.5.0",
     "vue-router": "^4.6.0"
   },

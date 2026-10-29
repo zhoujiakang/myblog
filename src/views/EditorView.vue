@@ -2,6 +2,7 @@
 import { ref, reactive, watch, onMounted, onUnmounted, computed } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { site } from '../composables/useBlog';
+import { refreshMermaid } from '../composables/useMermaid';
 import type { Post, PostInput } from '../types/blog';
 const route = useRoute(),
   router = useRouter();
@@ -96,7 +97,10 @@ async function refreshPreview() {
   const id = ++requestId;
   try {
     const rendered = await api('preview', { body: form.body });
-    if (id === requestId) preview.value = rendered.html;
+    if (id === requestId) {
+      preview.value = rendered.html;
+      void refreshMermaid();
+    }
   } catch (e) {
     if (id === requestId) notify((e as Error).message, true);
   }

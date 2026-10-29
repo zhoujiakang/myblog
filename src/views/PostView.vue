@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { posts, groupSlug } from '../composables/useBlog';
+import { refreshMermaid } from '../composables/useMermaid';
 import ArticleToc from '../components/ArticleToc.vue';
 import NotFoundView from './NotFoundView.vue';
 const route = useRoute();
@@ -66,9 +67,14 @@ watch(
     scroll();
   },
 );
+watch(
+  () => post.value?.html,
+  () => void refreshMermaid(),
+);
 onMounted(() => {
   window.addEventListener('scroll', scroll, { passive: true });
   scroll();
+  void refreshMermaid();
 });
 onUnmounted(() => window.removeEventListener('scroll', scroll));
 </script>
