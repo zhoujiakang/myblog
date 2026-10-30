@@ -970,6 +970,7 @@ a.eyebrow:hover { text-decoration: underline; text-underline-offset: 4px; text-d
 
 /* ---------- 阅读页 ---------- */
 .reading { display: grid; grid-template-columns: minmax(0, var(--measure)) 240px; gap: 72px; padding: 56px 0 96px; align-items: start; }
+.reading > * { min-width: 0; }
 
 .article-head { padding-bottom: 28px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
 .backlink {
@@ -1054,6 +1055,10 @@ a.eyebrow:hover { text-decoration: underline; text-underline-offset: 4px; text-d
   display: flex;
   justify-content: center;
 }
+/* 窄屏图不缩放，按原尺寸横向滚动；靠左对齐才不会把左侧内容藏到滚动区外 */
+@media (max-width: 640px) {
+  .mermaid-figure .mermaid { justify-content: flex-start; }
+}
 .mermaid-figure .mermaid:not([data-rendered]) {
   max-height: 0;
   overflow: hidden;
@@ -1106,6 +1111,18 @@ a.eyebrow:hover { text-decoration: underline; text-underline-offset: 4px; text-d
 .tok-k { color: var(--accent); }
 .tok-s { color: color-mix(in srgb, var(--accent) 70%, var(--text-2)); }
 .tok-c { color: var(--text-3); font-style: italic; }
+
+/* 表格滚动容器：窄屏保底列宽，需要时横向滚动 */
+.table-wrap {
+  margin: 26px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+/* 只有实际溢出（由 JS 打标）才提示右缘还有内容，半透明、不依赖底色 */
+.table-wrap[data-scrollable] {
+  box-shadow: inset -14px 0 14px -14px color-mix(in srgb, var(--text) 22%, transparent);
+}
+.table-wrap > table { margin: 0; }
 
 .prose table {
   width: 100%;
@@ -1311,7 +1328,8 @@ a.eyebrow:hover { text-decoration: underline; text-underline-offset: 4px; text-d
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 980px) {
-  .reading { grid-template-columns: 1fr; gap: 0; }
+  /* minmax(0,1fr)：不加 0 下限时，列会被代码块/表格的 max-content 撑宽，手机上整页被缩小 */
+  .reading { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .toc-mobile { display: block; margin: 0 0 28px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
   .toc-desktop { display: none; }
   .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 0 56px; }
@@ -1348,7 +1366,7 @@ a.eyebrow:hover { text-decoration: underline; text-underline-offset: 4px; text-d
 }
 
 @media (max-width: 900px) {
-  .cols { grid-template-columns: 1fr; gap: 0; padding: 34px 24px 84px; }
+  .cols { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 34px 24px 84px; }
   .col-side {
     position: static;
     display: grid;
@@ -1362,13 +1380,32 @@ a.eyebrow:hover { text-decoration: underline; text-underline-offset: 4px; text-d
 @media (max-width: 560px) {
   .toolbar .theme-switch .label { display: none; }
   .theme-switch { padding: 4px 6px; gap: 5px; }
-  .dot { width: 11px; height: 11px; }
+  .dot { width: 11px; height: 11px; position: relative; }
+  /* 圆点视觉保持 11px，可点区域扩到 27px，手指才点得准 */
+  .dot::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; }
   .hero { padding: 36px 0 48px; gap: 28px; }
   .hero h1 { font-size: 24px; }
   .hero h1 br { display: none; }
-  .cover { max-width: 100%; aspect-ratio: 5 / 4; }
+  .cover { max-width: 100%; aspect-ratio: 3 / 2; }
   .field-row { grid-template-columns: 1fr; }
   .prose { font-size: 15.5px; }
+  /* 正文：移动端收紧标题与段间距，避免一屏只剩一个标题 */
+  .prose > * + * { margin-top: 18px; }
+  .prose h2 { margin-top: 40px; font-size: 21px; }
+  .prose h3 { margin-top: 28px; }
+  /* 表格：保底列宽，需要时在容器内横向滚动，列不再被压成两三个字 */
+  .table-wrap { margin: 22px 0; }
+  .table-wrap > table { min-width: 480px; }
+  .prose th, .prose td { padding: 9px 12px; min-width: 86px; }
+  /* 标题区留白收紧，手机上首屏能多露出正文 */
+  .article-head { padding-bottom: 20px; margin-bottom: 22px; }
+  .toc-mobile { margin: 0 0 20px; }
+  /* 代码块与图：缩小内边距和字号，尽量少横向滚动 */
+  .code-block, .mermaid-figure { margin: 22px 0; }
+  .code-block .bar { padding: 7px 12px; }
+  .code-block pre { padding: 13px 0; font-size: 12.5px; line-height: 1.75; }
+  .code-block pre code { padding: 0 12px; }
+  .mermaid-figure { padding: 14px 12px; }
   .page-head { padding: 36px 0 24px; }
   .page-head h1 { font-size: 26px; }
   .article-head h1 { font-size: 25px; }

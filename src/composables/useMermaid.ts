@@ -6,6 +6,11 @@ type Mermaid = MermaidModule['default'];
 let loader: Promise<MermaidModule> | null = null;
 let seq = 0;
 let observer: MutationObserver | null = null;
+let resizeBound = false;
+let lastNarrow: boolean | null = null;
+
+/** 窄屏不把图缩到容器宽度，保持原字号，改由图容器横向滚动 */
+const isNarrow = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 640px)').matches;
 
 const readVar = (name: string, fallback = '') => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -81,6 +86,8 @@ export async function renderMermaid(root: ParentNode = document): Promise<void> 
   if (!nodes.length) return;
 
   const mermaid = await loadMermaid();
+  const narrow = isNarrow();
+  lastNarrow = narrow;
   mermaid.initialize({
     startOnLoad: false,
     securityLevel: 'strict',
@@ -89,13 +96,16 @@ export async function renderMermaid(root: ParentNode = document): Promise<void> 
     themeCSS: themeCss(),
     fontFamily: readVar('--font-sans', 'sans-serif'),
     sequence: {
-      useMaxWidth: true,
+      useMaxWidth: !narrow,
       mirrorActors: false,
       actorMargin: 32,
       messageMargin: 26,
       boxMargin: 6,
       noteMargin: 6,
       bottomMarginAdj: 4,
+    },
+    flowchart: {
+      useMaxWidth: !narrow,
     },
   });
 
@@ -119,6 +129,17 @@ export function watchMermaidTheme(): void {
     void renderMermaid(document);
   });
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  if (!resizeBound && typeof window !== 'undefined') {
+    resizeBound = true;
+    let timer = 0;
+    // 跨过窄屏断点时重渲染：宽屏按容器缩放，窄屏保持原字号并允许横向滚动
+    window.addEventListener('resize', () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        if (isNarrow() !== lastNarrow) void renderMermaid(document);
+      }, 200);
+    });
+  }
 }
 
 /** 页面内容更新后调用：等 DOM 更新完再渲染。 */

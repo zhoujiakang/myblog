@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted, onUnmounted, computed } from 'vue';
+import { ref, reactive, watch, onMounted, onUnmounted, computed, nextTick } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { site } from '../composables/useBlog';
 import { refreshMermaid } from '../composables/useMermaid';
+import { markScrollableTables } from '../composables/useOverflowHint';
 import type { Post, PostInput } from '../types/blog';
 const route = useRoute(),
   router = useRouter();
@@ -100,6 +101,7 @@ async function refreshPreview() {
     if (id === requestId) {
       preview.value = rendered.html;
       void refreshMermaid();
+      void nextTick().then(() => markScrollableTables());
     }
   } catch (e) {
     if (id === requestId) notify((e as Error).message, true);

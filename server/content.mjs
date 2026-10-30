@@ -77,6 +77,9 @@ export function renderMarkdown(body, base = '/') {
     return `<div class="code-block"><div class="bar"><span>${escape(lang || 'text')}</span><button class="copy" type="button">复制</button></div><pre><code>${code}</code></pre></div>`;
   };
   const image = md.renderer.rules.image;
+  // 表格外包一层滚动容器：窄屏保持最小列宽，需要时横向滚动，避免每行只剩两三个字
+  md.renderer.rules.table_open = () => '<div class="table-wrap"><table>';
+  md.renderer.rules.table_close = () => '</table></div>';
   md.renderer.rules.image = (tokens, idx, options, env, self) => {
     const src = tokens[idx].attrGet('src') || '';
     if (!/^(?:[a-z]+:|\/\/|#)/i.test(src))

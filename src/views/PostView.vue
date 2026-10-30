@@ -3,6 +3,7 @@ import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { posts, groupSlug } from '../composables/useBlog';
 import { refreshMermaid } from '../composables/useMermaid';
+import { markScrollableTables } from '../composables/useOverflowHint';
 import ArticleToc from '../components/ArticleToc.vue';
 import NotFoundView from './NotFoundView.vue';
 const route = useRoute();
@@ -67,14 +68,19 @@ watch(
     scroll();
   },
 );
+/** 正文渲染后再处理图与表格：mermaid 转图、溢出表格加滚动提示 */
+function afterRender() {
+  void refreshMermaid();
+  void nextTick().then(() => markScrollableTables());
+}
 watch(
   () => post.value?.html,
-  () => void refreshMermaid(),
+  () => afterRender(),
 );
 onMounted(() => {
   window.addEventListener('scroll', scroll, { passive: true });
   scroll();
-  void refreshMermaid();
+  afterRender();
 });
 onUnmounted(() => window.removeEventListener('scroll', scroll));
 </script>
