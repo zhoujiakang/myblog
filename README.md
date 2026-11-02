@@ -1,26 +1,19 @@
-<p align="center">
-  <img src="public/og-cover.png" width="720" alt="zzZ · makes things. —— 小男孩和一只戴橙领巾的小狗">
-</p>
+<h1 align="center">
+  <img src=".github/assets/mark-dog.png" height="56" alt="">
+  &nbsp;zzZ · makes things.&nbsp;
+  <img src=".github/assets/mark-me.png" height="58" alt="">
+</h1>
 
-<h1 align="center">zzZ · makes things.</h1>
-
-<p align="center">把模糊的想法，变成能跑起来的东西。</p>
-
-<p align="center">
-  <a href="https://blog.zzzink.cn"><img src="https://img.shields.io/badge/blog.zzzink.cn-在线-c98a1e?style=flat-square" alt="站点地址"></a>
-  <img src="https://img.shields.io/badge/Vue-3.5-42b883?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue 3">
-  <img src="https://img.shields.io/badge/Vite-6-646cff?style=flat-square&logo=vite&logoColor=white" alt="Vite 6">
-  <img src="https://img.shields.io/badge/内容-Markdown-e4dccb?style=flat-square&logo=markdown&logoColor=222220" alt="Markdown 驱动">
-  <img src="https://img.shields.io/badge/部署-GitHub%20Pages-222220?style=flat-square&logo=github&logoColor=white" alt="GitHub Pages">
-</p>
+<p align="center"><strong>把模糊的想法，变成能跑起来的东西。</strong></p>
 
 <p align="center">
-  <img src=".github/assets/home.png" width="620" alt="桌面端首页">
-  &nbsp;&nbsp;
-  <img src=".github/assets/mobile.png" width="176" alt="手机端首页">
+  <a href="https://blog.zzzink.cn"><strong>在线站点</strong></a> ·
+  <a href="#快速开始">快速开始</a> ·
+  <a href="#写内容">写内容</a> ·
+  <a href="skills/README.md">建站技能</a>
 </p>
 
----
+<p align="center"><sub>Vue 3 · Vite 6 · 内容用 Markdown 写 · 部署在 GitHub Pages</sub></p>
 
 ## 这是什么
 
@@ -39,6 +32,20 @@ content/                  ← 你要动的只有这里
 └── articles/*.md         文章
 src/                      ← 结构、视图、样式
 ```
+
+## 界面一览
+
+<div align="center">
+
+<a href=".github/assets/home.png"><img src=".github/assets/home.png" width="450" alt="桌面端首页：大标题、插画与四张入口卡"></a>
+&nbsp;&nbsp;&nbsp;
+<a href=".github/assets/mobile.png"><img src=".github/assets/mobile.png" width="128" alt="手机端首页：导航换行、标题缩小"></a>
+
+</div>
+
+<p align="center"><sub>桌面端：大标题 + 插画，下面是四张入口卡　｜　手机端：导航换行，标题与插画各自成行</sub></p>
+
+<p align="center"><sub>点击图片看原尺寸。</sub></p>
 
 ## 快速开始
 
@@ -145,7 +152,12 @@ content: 从界面到部署都能自己走完。
 
 上线前记得把 `content/site.md` 里的 `siteUrl` 改成真实地址——社交分享的预览图用它拼绝对 URL，写错会导致分享卡片没图。
 
-构建时会把 `site.md` 里的标题、描述、`og:*` 注入 `index.html`，所以分享到微信、X、Slack 时能抓到封面（就是本文顶部那张图，1200×630，1.91:1）。
+构建时会把 `site.md` 里的标题、描述、`og:*` 注入 `index.html`，所以分享到微信、X、Slack 时能抓到封面：
+
+<p align="center">
+  <img src="public/og-cover.png" width="320" alt="分享卡片：小男孩和戴橙领巾的小狗">
+  <br><sub>1200×630，1.91:1 —— 分享卡片用的就是这张。</sub>
+</p>
 
 ## 附带的技能
 
