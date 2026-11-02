@@ -1,0 +1,161 @@
+:root {
+  /* 暖米白设计系统 */
+  --bg: #fbf7f0;
+  --ink: #222220;
+  --ink-2: #3a3a36;
+  --muted: #6f6a5e;
+  --faint: #9a9488;
+  --accent: #c98a1e;
+  --yellow: #f2b441;
+  --card: #ffffff;
+  --line: #e4dccb;
+
+  /* 拉丁字母用自托管字体；中文无对应字形，回退到系统 CJK 字体栈（无需自托管数 MB 的中文字库） */
+  --font-cjk: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
+  --font-display: 'Inter', var(--font-cjk);
+  --font-title: 'Barlow', var(--font-cjk);
+  --font-body: 'Inter', var(--font-cjk);
+  --font-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  /* ② 极淡暖色点阵：把大片留白切成有质感的"纸"，留白不再是空洞 */
+  background-image: radial-gradient(rgba(140, 130, 110, 0.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: -1px -1px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* 小标签：// 作品集 之类 */
+.label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--faint);
+}
+
+/* 暖黄主按钮 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 0 24px;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #2a2113;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* 卡片：白底圆角 + 极淡描边与投影，让它在米白底上有"浮起"的层次 */
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid rgba(34, 34, 32, 0.06);
+  box-shadow: 0 1px 2px rgba(34, 34, 32, 0.03), 0 10px 30px rgba(34, 34, 32, 0.04);
+}
+
+/* 子页统一头部区 */
+.page-head {
+  padding-top: 100px;
+}
+
+.page-head .title {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.page-head .intro {
+  margin-top: 18px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+@media (max-width: 700px) {
+  .page-head {
+    padding-top: 64px;
+  }
+  .page-head .title {
+    font-size: 34px;
+  }
+}
+
+/* ===== 入场动效：滚动揭示（v-reveal 指令驱动） ===== */
+.reveal {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.reveal.reveal-in {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 尊重系统的"减少动态效果"设置 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.reveal-in {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+}
