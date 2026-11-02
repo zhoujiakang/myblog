@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+*.local
+.vite
+
+# 废弃/历史素材归档，不进版本库
+.archive/

@@ -1,0 +1,146 @@
+/* 风格入口 —— 切换风格只改这一行。
+   这里带的是示意用的主题：'./themes/warm-paper.css'。
+   换风格 / 加主题见 skill 的 references/styles.md（先与用户确认气质方向）。 */
+@import './themes/warm-paper.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  /* 底纹由主题决定；主题设 --texture-image: none 即纯色底 */
+  background-image: var(--texture-image);
+  background-size: var(--texture-size);
+  background-position: var(--texture-position);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* 小标签：// 作品集 之类 */
+.label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--faint);
+}
+
+/* 主按钮（配色由主题的 --btn-bg / --btn-fg 决定） */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  padding: 0 24px;
+  border-radius: var(--radius-btn);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-mono);
+  font-size: 15px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* 卡片：底 + 圆角 + 细描边 + 淡阴影，全部走主题令牌 */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-card);
+}
+
+/* 子页统一头部区 */
+.page-head {
+  padding-top: 100px;
+}
+
+.page-head .title {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.page-head .intro {
+  margin-top: 18px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+@media (max-width: 700px) {
+  .page-head {
+    padding-top: 64px;
+  }
+  .page-head .title {
+    font-size: 34px;
+  }
+}
+
+/* ===== 入场动效：滚动揭示（v-reveal 指令驱动） ===== */
+.reveal {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.reveal.reveal-in {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 尊重系统的"减少动态效果"设置 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.reveal-in {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+}

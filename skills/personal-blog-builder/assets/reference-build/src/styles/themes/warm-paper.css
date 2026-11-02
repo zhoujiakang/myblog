@@ -1,0 +1,55 @@
+/* 主题：暖纸 / warm-paper（默认）
+   气质：温和、有手作感、像一张有点纤维的纸
+   适合：设计 / 前端 / 独立开发者 / 写作
+   注意：首页插画是暖底，与这套主题天然贴合 */
+
+:root {
+  /* 底色与层次 */
+  --bg: #fbf7f0;
+  --bg-card: #ffffff;
+  --bg-hover: #fffdf8;
+
+  /* 文字层级（--ink 最深 → --faint 最浅） */
+  --ink: #222220;
+  --ink-2: #3a3a36;
+  --ink-3: #4a463e;
+  --muted: #6f6a5e;
+  --faint: #9a9488;
+
+  /* 强调色 */
+  --accent: #c98a1e;
+  --accent-soft: #fae3a8;
+  --btn-bg: #f2b441;
+  --btn-fg: #2a2113;
+  --on-accent: #ffffff;
+  --accent-wash: rgba(242, 180, 65, 0.14);
+  --accent-halo: rgba(201, 138, 30, 0.13);
+
+  /* 线与描边 */
+  --line: #e4dccb;
+  --border-soft: rgba(34, 34, 32, 0.06);
+  --border-strong: rgba(34, 34, 32, 0.14);
+  --border-hover: rgba(34, 34, 32, 0.32);
+
+  /* 形状 */
+  --radius-card: 16px;
+  --radius-btn: 8px;
+  --radius-chip: 999px;
+
+  /* 阴影：淡 + 双层，制造"浮起"而不是"投影" */
+  --shadow-card: 0 1px 2px rgba(34, 34, 32, 0.03), 0 10px 30px rgba(34, 34, 32, 0.04);
+  --shadow-lift: 0 1px 2px rgba(34, 34, 32, 0.04), 0 16px 40px rgba(34, 34, 32, 0.08);
+  --shadow-pop: 0 4px 14px rgba(34, 34, 32, 0.18);
+
+  /* 页面底纹（设为 none 即纯色底） */
+  --texture-image: radial-gradient(rgba(140, 130, 110, 0.16) 1px, transparent 1px);
+  --texture-size: 22px 22px;
+  --texture-position: -1px -1px;
+
+  /* 字体：拉丁自托管 + 中文系统栈兜底 */
+  --font-cjk: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Hiragino Sans GB', sans-serif;
+  --font-display: 'Inter', var(--font-cjk);
+  --font-title: 'Barlow', var(--font-cjk);
+  --font-body: 'Inter', var(--font-cjk);
+  --font-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, monospace;
+}
