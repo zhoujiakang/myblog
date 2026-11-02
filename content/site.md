@@ -8,8 +8,8 @@ phone: 18305053485
 qq: 3102653082
 copyright: © 2026 zzZ · Built with code & agents
 
-# 部署后的站点绝对地址（社交分享预览图等需要绝对 URL 的场景会用到；上线后改成你的真实 Pages 地址）
-siteUrl: https://zhoujiakang.github.io/myself
+# 部署后的站点绝对地址（社交分享预览图等需要绝对 URL 的场景会用到；上线后改成你的真实域名）
+siteUrl: https://blog.zzzink.cn
 
 # 顶部导航：标签::路由，用 | 分隔，顺序即展示顺序
 nav: 首页::/|作品::/works|Skill::/skills|文章::/articles|关于::/about
