@@ -159,11 +159,9 @@ content: 从界面到部署都能自己走完。
   <br><sub>1200×630，1.91:1 —— 分享卡片用的就是这张。</sub>
 </p>
 
-## 附带的技能
+## 建站技能
 
-`skills/personal-blog-builder/` 是一套"从零搭一个个人站"的技能包：先访谈问清需求，再按栏目搭骨架，风格做成可替换的主题层，文案全部外置。这个站就是按它做出来的。
-
-想用它给自己或别人建站，见 [`skills/README.md`](skills/README.md)。
+本站就是按 [`personal-blog-builder`](https://github.com/zhoujiakang/myskills/tree/main/personal-blog-builder) 做出来的：先访谈问清需求，再按栏目搭骨架，风格做成可替换的主题层，文案全部外置。技能本身维护在 [zhoujiakang/myskills](https://github.com/zhoujiakang/myskills)，在那里版本化、接受贡献。
 
 ## 边界
 

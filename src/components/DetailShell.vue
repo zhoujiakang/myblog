@@ -17,7 +17,7 @@
       <article v-if="body" class="prose">
         <template v-for="(para, i) in paras" :key="i">
           <h2 v-if="para.h">{{ para.h }}</h2>
-          <p v-else>{{ para.t }}</p>
+          <p v-else v-html="para.t"></p>
         </template>
       </article>
 
@@ -55,9 +55,35 @@ const paras = computed(() => {
     .filter(Boolean)
     .map((block) => {
       if (block.startsWith('# ')) return { h: block.slice(2).trim() }
-      return { t: block.replace(/\n/g, ' ') }
+      return { t: renderInline(block.replace(/\n/g, ' ')) }
     })
 })
+
+// 行内格式：转义 HTML 后，支持 [文字](链接)、裸 URL 自动链接、**加粗**
+function renderInline(text) {
+  let s = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+
+  // [文字](链接) —— 先处理，避免和裸 URL 规则冲突
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, url) => {
+    const safe = url.replace(/"/g, '%22')
+    const attrs = /^https?:\/\//.test(url) ? ' target="_blank" rel="noopener noreferrer"' : ''
+    return `<a href="${safe}"${attrs}>${label}</a>`
+  })
+
+  // 裸 URL 自动链接（排除已出现在 href=" 之后的地址）
+  s = s.replace(/(?<!["'>])(https?:\/\/[^\s<)]+)/g, (url) => {
+    const safe = url.replace(/"/g, '%22')
+    return `<a href="${safe}" target="_blank" rel="noopener noreferrer">${url}</a>`
+  })
+
+  // **加粗**
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+
+  return s
+}
 </script>
 
 <style scoped>
@@ -151,6 +177,24 @@ const paras = computed(() => {
   font-size: 16px;
   line-height: 1.85;
   color: var(--muted);
+}
+
+.prose p :deep(a) {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: opacity 0.18s ease;
+}
+
+.prose p :deep(a):hover {
+  opacity: 0.78;
+}
+
+.prose p :deep(strong) {
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .cta {
