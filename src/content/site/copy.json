@@ -1,0 +1,250 @@
+{
+  "common": {
+    "arrow": " →",
+    "all": "全部 →",
+    "minutes": "{count} 分钟",
+    "words": "{count} 字",
+    "monthUnit": "{month} 月",
+    "prevPost": "← 上一篇",
+    "nextPost": "下一篇 →",
+    "prevWork": "← 上一条",
+    "nextWork": "下一条 →",
+    "tocCount": "{count} 节",
+    "tocExpand": "展开本文目录",
+    "tocCollapse": "收起本文目录"
+  },
+  "nav": {
+    "ariaLabel": "主导航",
+    "mobileAriaLabel": "站点导航菜单",
+    "items": [
+      {
+        "to": "/",
+        "label": "首页"
+      },
+      {
+        "to": "/works",
+        "label": "折腾"
+      },
+      {
+        "to": "/categories",
+        "label": "分类"
+      },
+      {
+        "to": "/tags",
+        "label": "标签"
+      },
+      {
+        "to": "/archive",
+        "label": "归档"
+      },
+      {
+        "to": "/about",
+        "label": "关于"
+      }
+    ],
+    "menuOpen": "菜单",
+    "menuClose": "收起",
+    "menuAria": "展开或收起导航菜单"
+  },
+  "search": {
+    "button": "搜一下 ⌘K",
+    "buttonShort": "搜索",
+    "buttonAria": "打开站内搜索",
+    "title": "找点东西",
+    "placeholder": "输入标题、标签或摘要…",
+    "hint": "回车打开第一条 · Esc 关闭",
+    "empty": "没找到相关内容，换个词试试。",
+    "count": "{count} 条结果",
+    "groupPosts": "文章",
+    "groupWorks": "折腾",
+    "close": "关闭",
+    "closeAria": "关闭搜索"
+  },
+  "footer": {
+    "slogan": "写点能留下的东西",
+    "copyright": "© {year} {name}",
+    "separator": "　·　",
+    "separatorMobile": " · ",
+    "linkSeparator": " · ",
+    "links": [
+      {
+        "to": "/works",
+        "label": "折腾"
+      },
+      {
+        "to": "/categories",
+        "label": "分类"
+      },
+      {
+        "to": "/tags",
+        "label": "标签"
+      },
+      {
+        "to": "/archive",
+        "label": "归档"
+      },
+      {
+        "to": "/about",
+        "label": "关于"
+      }
+    ]
+  },
+  "home": {
+    "heroPrimary": "看看文章 →",
+    "heroSecondary": "关于我",
+    "featuredBadge": "置顶 · 精选",
+    "featuredLink": "读这篇 →",
+    "recentTitle": "最近在写",
+    "recentNote": "近期",
+    "arrowPrev": "向前的文章",
+    "arrowNext": "向后的文章",
+    "categoriesTitle": "都写些什么",
+    "categoriesNote": "{categories} 个方向 · {posts} 篇",
+    "categoriesNoteMobile": "{categories} 个方向",
+    "goalsTitle": "近期目标",
+    "goalsNote": "{count} 个想做",
+    "goalsEmpty": "都干完了，去想点新目标 →"
+  },
+  "contact": {
+    "title": "有话说就来联系我",
+    "desc": "{channels} 都放在关于页了，点一下就能复制。有建议、想交流，直接来。",
+    "mobileBefore": "{channels} 都放在",
+    "mobileLink": "关于页",
+    "mobileAfter": "了，点一下就能复制。",
+    "button": "去关于页 →"
+  },
+  "posts": {
+    "title": "文章",
+    "desc": "共 {count} 篇 · 按时间倒序 · 慢慢写，慢慢改",
+    "tagTitle": "标签",
+    "tagDesc": "#{name} 下的全部文章 · 共 {count} 篇"
+  },
+  "categories": {
+    "title": "分类",
+    "desc": "共 {count} 个分类 · 点进去看每一类写了什么",
+    "latest": "最新：{title}",
+    "countUnit": " 篇",
+    "more": "进入分类 →",
+    "detailDesc": "共 {count} 篇 · 这里是「{name}」方向的全部文章"
+  },
+  "tags": {
+    "title": "标签",
+    "desc": "共 {count} 个标签 · 按篇数排序",
+    "countUnit": "{count} 篇",
+    "hash": "#"
+  },
+  "archive": {
+    "title": "归档",
+    "desc": "按时间组织的全部文章，能看出某年某月写了多少。",
+    "sideLabel": "归档侧栏",
+    "yearNote": "共 {count} 篇 · {months} 个月有更新",
+    "calPrev": "上一月",
+    "calNext": "下一月",
+    "monthLabel": "{year} 年 {month}",
+    "weekdays": [
+      "日",
+      "一",
+      "二",
+      "三",
+      "四",
+      "五",
+      "六"
+    ],
+    "months": [
+      "一月",
+      "二月",
+      "三月",
+      "四月",
+      "五月",
+      "六月",
+      "七月",
+      "八月",
+      "九月",
+      "十月",
+      "十一月",
+      "十二月"
+    ],
+    "calTitle": "{day} 日发布了 {count} 篇",
+    "calFoot": "{month} 月共 {count} 篇",
+    "barTitle": "{month} {count} 篇",
+    "sideTitleCurrent": "本年节奏",
+    "sideTitleOther": "{year} 年节奏",
+    "tabsLabel": "归档内容切换",
+    "tabTimeline": "文章时间线",
+    "tabSide": "日历·节奏",
+    "emptySide": "还没有文章。写完第一篇，这里会出现日历和本年节奏。"
+  },
+  "about": {
+    "title": "关于",
+    "copyHint": "↑ 点击复制",
+    "copied": "已复制 ✓",
+    "tabsLabel": "关于页内容切换",
+    "tabCard": "我的名片",
+    "tabText": "自我介绍"
+  },
+  "article": {
+    "sideLabel": "文章侧栏",
+    "tocTitle": "本节目录",
+    "meta": "　·　阅读 {reading}　·　{words}",
+    "notFound": "这篇文章不见了。",
+    "notFoundButton": "回到文章列表",
+    "relatedTag": "#{name} 下还有",
+    "relatedCategory": "「{name}」里还有",
+    "relatedRecent": "最近写的",
+    "relatedAll": "全部 {count} 篇",
+    "relatedAllPosts": "全部文章",
+    "backLabel": "返回",
+    "backTitle": "文章列表 →",
+    "backPosts": "← 文章列表",
+    "backCategory": "← {name}",
+    "backTag": "← #{name}"
+  },
+  "workDetail": {
+    "sideLabel": "文章侧栏",
+    "tocTitle": "本节目录",
+    "meta": "　·　阅读 {reading}",
+    "metaWords": "　·　{words}",
+    "metaLinkPrefix": "　·　",
+    "metaLink": "去看看 →",
+    "notFound": "这条折腾记录不见了。",
+    "notFoundButton": "回到折腾记录",
+    "relatedKind": "「{name}」里还有",
+    "relatedRecent": "最近折腾的",
+    "relatedAll": "全部 {count} 条",
+    "relatedAllWorks": "全部折腾",
+    "backLabel": "返回",
+    "backTitle": "折腾记录 →",
+    "backWorks": "← 折腾记录"
+  },
+  "works": {
+    "title": "折腾记录",
+    "desc": "做过的项目、攒下的手艺，和想安利给别人的东西。接下来想做的都会变成首页的近期目标。",
+    "statPlanned": "接下来想做",
+    "statDone": "已完成",
+    "total": "共 {count} 个",
+    "plannedTitle": "接下来想做的",
+    "plannedNote": "{count} 个 · 滑动查看 →",
+    "plannedEmptyTitle": "接下来想做的暂时空着",
+    "plannedEmptyDesc": "说明正专心搞手头的活，挺好。",
+    "projectsTitle": "我的项目",
+    "skillsTitle": "我的技能",
+    "columnNote": "共 {count} 个",
+    "projectsEmpty": "还没有盖棺定论的项目 —— 都在上面挂着呢。",
+    "skillsEmpty": "手艺还在攒，学成了就搬到这里。",
+    "cardMore": "读全文 →",
+    "nextTitle": "下一个折腾会是什么？",
+    "nextDesc": "还在攒。有想看的，去关于页找我聊聊。"
+  },
+  "notFound": {
+    "title": "404",
+    "desc": "这一页不存在，也许它被归档了。",
+    "cardTitle": "回到首页",
+    "cardDesc": "看看最近在写什么。"
+  },
+  "empty": {
+    "posts": "还没有文章。在 src/content/posts/ 里新建一个 .md，第一篇就会出现在这里。",
+    "categories": "还没有分类。写文章时填上 category，分类卡会自动生成。",
+    "tags": "还没有标签。写文章时填上 tags，标签会自动汇总到这里。",
+    "archive": "还没有文章。时间线会随写作自动生长。"
+  }
+}

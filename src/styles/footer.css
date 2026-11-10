@@ -1,0 +1,29 @@
+/* ============================================================
+   页脚（画布 2:112 / 2:239）
+   ============================================================ */
+
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px var(--pad-section) 38px;
+  /* 短页面兜底：主体没撑满时把页脚推到容器底部 */
+  margin-top: auto;
+}
+
+.site-footer-line {
+  font-size: 12px;
+  color: var(--ink-faint-2);
+  line-height: normal;
+}
+
+/* 页脚链接文字只有 16px 高：扩出点击区，负 margin 抵消、视觉不变 */
+.site-footer-line a {
+  padding: 10px 8px;
+  margin: -10px -8px;
+}
+
+.site-footer-line a:hover {
+  color: var(--ink);
+}
+

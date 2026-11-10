@@ -1,0 +1,328 @@
+/* ============================================================
+   页头（画布 2:2 / 2:175）
+   ============================================================ */
+
+/* 手机页头在桌面端不出现（与 .site-header 同为单类选择器，需提高权重） */
+.site-header.site-header--mobile {
+  display: none;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px var(--pad-section);
+  height: 92px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  /* 负 margin 抵消 padding：视觉位置不变，点击区上下各多 10px */
+  padding: 10px 0;
+  margin: -10px 0;
+}
+
+.brand-avatar {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: var(--ring-lg);
+}
+
+.brand-avatar img {
+  width: 100%;
+  height: 100%;
+  /* logo 是带透明通道的插画，用 contain 保住整个角色，
+     cover 会把豆豆的头顶和耳朵裁掉 */
+  object-fit: contain;
+  padding: 6px;
+}
+
+.brand-name {
+  font-size: 22px;
+  color: var(--ink);
+  line-height: normal;
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: #fff;
+  border-radius: var(--r-pill);
+  box-shadow: var(--ring-lg);
+}
+
+/* 滑动的激活胶囊 —— 独立图层，靠 transform 平移到激活项上。
+   文字另有一层，因此切换时胶囊在动、文字不动，
+   导航条整体宽度与各项位置都保持不变。 */
+.nav-pill {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  height: calc(100% - 12px);
+  background: var(--blue);
+  border-radius: var(--r-pill);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 每一项的尺寸恒定：padding 常驻，激活与否不改变盒子大小。
+   这是消除「切换时整条导航跳动」的关键。 */
+.nav-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: var(--r-pill);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: normal;
+  transition: color 0.24s ease;
+}
+
+/* 激活态只改颜色，不改尺寸 —— 尺寸由 .nav-item 统一提供。
+   白色文字以「胶囊已就位」为前提（data-pill-ready）：
+   若测量失败胶囊没垫上，白字会落在白色导航条上不可见，
+   所以此时保持深色，宁可没有高亮也不丢字。 */
+.nav[data-pill-ready='true'] .nav-item--active {
+  color: #fff;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-pill {
+  padding: 9px 18px;
+  background: var(--yellow);
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: normal;
+  white-space: nowrap;
+  box-shadow: var(--ring-lg);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.search-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ring-lg), 3px 3px 0 0 var(--border);
+}
+
+/* 手机页头右侧：短搜索按钮 + 菜单开关 */
+.mobile-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-pill--sm {
+  padding: 10px 14px;
+  font-size: 12px;
+}
+
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: var(--r-pill);
+  background: #fff;
+  box-shadow: var(--ring-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.menu-toggle--open {
+  background: var(--blue);
+  color: #fff;
+}
+
+.menu-toggle-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* 展开式移动导航：菜单挂在 sticky 页头下方，遮罩盖住剩余页面 */
+.mobile-nav-backdrop {
+  position: fixed;
+  /* 从页头下沿开始，展开菜单时页头与内容之间不留一条没变亮的缝 */
+  inset: var(--header-h) 0 0;
+  z-index: 20;
+  background: rgba(27, 42, 74, 0.22);
+}
+
+.mobile-nav {
+  position: absolute;
+  top: calc(100% - 4px);
+  left: var(--gutter-mobile);
+  right: var(--gutter-mobile);
+  z-index: 31;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px;
+  background: #fff;
+  border-radius: var(--r-card-md);
+  box-shadow: var(--ring-lg), var(--sh-card);
+}
+
+.mobile-nav-item {
+  padding: 11px 14px;
+  border-radius: var(--r-btn);
+  background: var(--bg);
+  box-shadow: var(--ring-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+}
+
+.mobile-nav-item--active {
+  background: var(--blue);
+  color: #fff;
+}
+
+/* ============================================================
+   站内搜索浮层
+   ============================================================ */
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 20px 20px;
+  background: rgba(27, 42, 74, 0.38);
+}
+
+.search-dialog {
+  width: 100%;
+  max-width: 560px;
+  padding: 22px;
+  background: var(--bg);
+  border-radius: var(--r-card-lg);
+  box-shadow: var(--ring-lg), var(--sh-featured);
+}
+
+.search-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.search-title {
+  font-size: 20px;
+  color: var(--ink);
+}
+
+.search-close {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-faint);
+  padding: 4px 8px;
+}
+
+.search-close:hover {
+  color: var(--blue-deep);
+}
+
+.search-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: none;
+  border-radius: var(--r-btn);
+  background: #fff;
+  box-shadow: var(--ring-sm);
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  outline-offset: 2px;
+}
+
+.search-input::placeholder {
+  color: var(--ink-faint-2);
+}
+
+.search-meta {
+  margin: 10px 2px 6px;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.search-results {
+  max-height: min(50vh, 380px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-empty {
+  padding: 18px 2px;
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: var(--r-btn);
+  background: #fff;
+  box-shadow: var(--ring-sm);
+}
+
+.search-result:hover {
+  background: var(--blue-soft);
+}
+
+.search-result-kind {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: var(--mint);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.search-result-title {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.search-result-date {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--ink-faint-2);
+}
+

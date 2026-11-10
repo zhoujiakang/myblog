@@ -1,0 +1,218 @@
+/* ============================================================
+   Design tokens — 逐值取自 Ardot 文件 745266242267085
+   （D1 首页·桌面 / D2 文章详情·桌面 / D3 首页·手机）
+   ============================================================ */
+
+:root {
+  /* ---- 底色与墨色 ---- */
+  --bg: #fffdf4;
+  --ink: #1b2a4a; /* 主文字 */
+  --border: #1c294a; /* 描边 / 阴影色 */
+  --ink-soft: #2c3a5c; /* 正文次级 */
+  --ink-body: #44536f; /* 正文段 */
+  --ink-lead: #3c4a6c; /* 导语 */
+  --ink-muted: #4e5e80; /* 简介 / 说明 */
+  --ink-muted-2: #5a6a8c; /* 摘要 / 社交 */
+  --ink-faint: #6d7b9e; /* 区块说明（较原稿加深，保证小字对比度） */
+  --ink-faint-2: #7583a4; /* 页脚 / 图注 */
+  --ink-faint-3: #7a88a8; /* 元信息 */
+
+  /* ---- 主色 ---- */
+  --blue: #4a9be8; /* 强调 / 高亮 */
+  --blue-deep: #2e8be6; /* 链接 */
+  --blue-soft: #d8f0ff; /* 浅蓝标签 */
+  --blue-mid: #7fc8f8; /* 热力图中段 */
+  --mint: #b8e8d8; /* 薄荷 */
+  --yellow: #ffe07a; /* 明黄 */
+  --lilac: #ddd6fa; /* 淡紫 */
+  --contact-bg: #eaf6ff; /* 联系卡底 */
+  --code-text: #bde4ff; /* 代码文字 */
+
+  /* ---- 字体 ---- */
+  --font-display: 'ZCOOL KuaiLe', 'Noto Sans SC', system-ui, sans-serif;
+  --font-body: 'Noto Sans SC', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- 描边粗细（画布中 3px 大卡 / 2px 小件）---- */
+  --bw-lg: 3px;
+  --bw-sm: 2px;
+  --bw-xs: 2.5px;
+
+  /* ---- 描边实现 ----
+     画布里描边是骑在节点边界上的（内外各半），因此「内容 + 内边距」等于节点尺寸。
+     CSS 的 border 会额外撑大盒子；改用 inset 阴影画描边，
+     盒子尺寸 = 内容 + 内边距，与画布的尺寸口径一致。 */
+  --ring-lg: inset 0 0 0 var(--bw-lg) var(--border);
+  --ring-sm: inset 0 0 0 var(--bw-sm) var(--border);
+  --ring-xs: inset 0 0 0 var(--bw-xs) var(--border);
+
+  /* ---- 圆角 ---- */
+  --r-pill: 999px;
+  --r-card-lg: 26px;
+  --r-card: 22px;
+  --r-card-md: 20px;
+  --r-code: 18px;
+  --r-img: 16px;
+  --r-btn: 14px;
+  --r-cell: 6px;
+  --r-dot: 5px;
+  --r-dot-sm: 4px;
+  --r-dot-xs: 3px;
+
+  /* ---- 硬阴影（画布为 offset 实心投影，无模糊）---- */
+  --sh-btn: 4px 4px 0 0 var(--border);
+  --sh-card: 5px 5px 0 0 var(--border);
+  --sh-featured: 6px 6px 0 0 var(--border);
+  --sh-hero: 7px 7px 0 0 var(--border);
+  --sh-article: 4px 4px 0 0 var(--border);
+  --sh-mobile: 3px 3px 0 0 var(--border);
+
+  /* ---- 页面左右留白 ----
+     全站只用一套 --pad：首页区块、页头、页脚、文章 / 列表 / 归档
+     共用同一个值，切换页面时内容左右边界不会跳动。
+     --pad-section / --pad-wide 保留为兼容别名，都指向同一个值。 */
+  --pad: clamp(20px, 4.2vw, 56px);
+  --pad-section: var(--pad);
+  --pad-wide: var(--pad);
+  --gutter: 56px;
+  --gutter-mobile: 20px;
+
+  /* 超宽屏（>1280px）把整站收进居中容器，避免正文被拉成超长横条 */
+  --page-max: 1280px;
+  /* 手机页头高度：页头、工具条吸顶偏移、菜单遮罩共用 */
+  --header-h: 60px;
+
+  /* ---- 断点 ---- */
+  --bp-mobile: 720px;
+}
+
+/* ============================================================
+   Reset
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* 兜底：任何一处意外超宽都不会出现整页横向滚动条。
+     clip 不会创建滚动容器，因此不影响 position: sticky。 */
+  overflow-x: clip;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 全站居中容器。
+   #root 是 body 的唯一 flex 子项，却不会沿主轴拉伸，
+   所以只靠 body 的 min-height 无法把页脚推到底；
+   这里让 .site-frame 自己成为一根撑满视口的 flex 列，
+   .page-body 再吃掉剩余高度，短页面（关于 / 404）页脚也能贴底。 */
+.site-frame {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 页面主体占满剩余高度，短页面时页脚仍贴在底部 */
+.page-body {
+  flex: 1 0 auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+/* figure / blockquote 的浏览器默认外边距会打乱画布的等距排布 */
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* ============================================================
+   共用原子类
+   ============================================================ */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+/* 画布里所有描边件的统一线条质感 */
+.bordered {
+  border: var(--bw-lg) solid var(--border);
+}
+
+/* ============================================================
+   无障碍：键盘焦点与减少动效
+   ============================================================ */
+
+:focus-visible {
+  outline: 3px solid var(--blue-deep);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* 胶囊导航里的激活项被蓝色填充，白色焦点圈更清楚 */
+.nav-item:focus-visible,
+.mobile-nav-item:focus-visible {
+  outline-color: #fff;
+  box-shadow: 0 0 0 3px var(--blue-deep);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

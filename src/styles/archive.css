@@ -1,0 +1,477 @@
+/* ============================================================
+   归档页 —— 年份大字头 + 月份卡片网格
+   ============================================================ */
+
+/* 与其它页面共用同一套左右留白。
+   原来是固定 920px 居中壳，1920px 下左边界会跑到 525px，
+   与页头 / 页脚完全脱节；切页时左右明显跳动。 */
+.archive-shell {
+  padding: 0 var(--pad);
+}
+
+.archive-shell .page-head {
+  padding: 46px 0 0;
+}
+
+/* 时间线 + 节奏面板双列 */
+.archive-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 44px;
+  margin-top: 28px;
+  width: 100%;
+}
+
+/* 左：时间线限宽，避免行宽过长难读 */
+.archive-main {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 720px;
+}
+
+/* 右：吸附的「本年节奏」面板，贴住右侧内容边界 */
+.archive-side {
+  position: sticky;
+  margin-left: auto;
+  /* 顶部锚定：日历多出一行时卡片向下生长，而不是向上顶 */
+  top: 96px;
+  width: 250px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* 节奏卡补满全年后侧栏变高：矮窗口留一条内部滚动兜底，
+     避免 sticky 固定后下半截永远看不到 */
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.archive-side::-webkit-scrollbar {
+  display: none;
+}
+
+.side-card {
+  padding: 18px 20px;
+  background: #fff;
+  border-radius: var(--r-card-md);
+  box-shadow: var(--ring-lg), var(--sh-card);
+}
+
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cal-nav {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--r-pill);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.cal-nav:hover:not(:disabled) {
+  background: var(--blue-soft);
+}
+
+.cal-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.cal-label {
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.cal-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.cal-week span {
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-faint);
+  line-height: normal;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-cell {
+  height: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border-radius: 9px;
+}
+
+.cal-cell--blank {
+  visibility: hidden;
+}
+
+.cal-num {
+  font-size: 12px;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+
+.cal-cell--today {
+  background: var(--blue);
+}
+
+.cal-cell--today .cal-num {
+  color: #fff;
+  font-weight: 700;
+}
+
+.cal-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--blue);
+}
+
+.cal-dot--multi {
+  background: var(--blue-deep);
+  width: 5px;
+  height: 5px;
+}
+
+.cal-foot {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--ink-faint-2);
+  font-size: 12px;
+  color: var(--ink-faint);
+  line-height: normal;
+}
+
+.archive-side-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--ink);
+  line-height: normal;
+}
+
+.archive-side-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.archive-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.archive-bar-row:hover .archive-bar {
+  background: var(--blue);
+}
+
+.archive-bar-label {
+  width: 38px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+  line-height: normal;
+}
+
+/* 没有轨道/上限槽：条本身就是数据，有多长就画多长，
+   右侧留白是自然结果，不是「还差多少」的进度提示 */
+.archive-bar {
+  display: block;
+  flex: 0 0 auto;
+  height: 10px;
+  max-width: calc(100% - 46px); /* label 38px + gap 8px，防止篇数多时溢出 */
+  border-radius: 999px;
+  background: var(--blue-mid);
+  transition: width 0.3s ease;
+}
+
+.archive-year-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 2px dashed var(--ink-faint-2);
+  padding-bottom: 14px;
+}
+
+.archive-year-label {
+  font-family: var(--font-display);
+  font-size: 34px;
+  color: var(--ink);
+  line-height: normal;
+}
+
+.archive-year-note {
+  font-size: 13px;
+  color: var(--ink-faint);
+  line-height: normal;
+}
+
+/* 纵向时间线：左侧竖轨，月份是节点 */
+.archive-timeline {
+  position: relative;
+  margin-top: 26px;
+  padding-left: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* 竖轨：虚线，从第一个节点延伸到最后 */
+.archive-timeline::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 12px;
+  bottom: 12px;
+  border-left: 2px dashed var(--ink-faint-2);
+}
+
+/* 月份节点：白底描边圆点，钉在轨道上 */
+.timeline-month {
+  position: relative;
+}
+
+.timeline-node {
+  position: absolute;
+  left: -31px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: var(--ring-xs);
+}
+
+.timeline-node--hot {
+  background: var(--blue);
+}
+
+.timeline-month-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.timeline-month-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--ink);
+  line-height: normal;
+}
+
+.timeline-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.timeline-post {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: normal;
+  padding-left: 16px;
+  position: relative;
+  /* 文字只有 21px 高，手机上难点中：上下扩出点击区，负 margin 抵消间距 */
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-top: -8px;
+  margin-bottom: -8px;
+}
+
+.timeline-post::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  margin-top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--ink-faint-2);
+}
+
+.timeline-post:hover {
+  color: var(--blue-deep);
+}
+
+.timeline-post:hover::before {
+  background: var(--blue);
+}
+
+.about-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 36px;
+  /* list-wrap 已有 36px 顶距，这里不再叠加 */
+  padding: 0;
+}
+
+/* 左：档案卡 */
+.about-card {
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 28px;
+  background: #fff;
+  border-radius: var(--r-card);
+  box-shadow: var(--ring-lg), var(--sh-card);
+}
+
+.about-avatar {
+  width: 104px;
+  height: 104px;
+  border-radius: 999px;
+  object-fit: cover;
+  box-shadow: var(--ring-sm);
+}
+
+.about-name {
+  font-size: 26px;
+  color: var(--ink);
+  line-height: normal;
+}
+
+.about-role {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  line-height: normal;
+}
+
+.about-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.contact-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  box-shadow: var(--ring-xs);
+  text-align: left;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.contact-row:hover {
+  background: #fff;
+  box-shadow: var(--ring-sm);
+}
+
+.contact-label {
+  width: 44px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+  line-height: normal;
+}
+
+.contact-value {
+  flex: 1 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-copied {
+  position: absolute;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--blue);
+  padding: 2px 10px;
+  border-radius: var(--r-pill);
+  opacity: 0;
+  transform: translateX(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  pointer-events: none;
+}
+
+.contact-copied.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.about-copy-hint {
+  font-size: 11.5px;
+  color: var(--ink-faint-3);
+  line-height: normal;
+}
+
+/* 右：介绍文字 */
+.about-text {
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.about-text p {
+  font-size: 15px;
+  line-height: 28px;
+  color: var(--ink-body);
+}
+
+.about-text a {
+  color: var(--blue-deep);
+  font-weight: 700;
+}
+
+.about-text a:hover {
+  text-decoration: underline;
+}
+
+/* 关于页切换控件：桌面左右双列同时可见，不需要切换。
+   两个面板始终都在 DOM 里，显隐规则集中在手机断点内。 */
+/* 关于 / 归档页手机 tab：桌面双列布局直接可见，切换条整体隐藏 */
+.about-tabs,
+.archive-tabs {
+  display: none;
+}
+

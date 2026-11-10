@@ -1,0 +1,112 @@
+/* ============================================================
+   中等宽度窗口（721–1100px）
+   固定留白已经改成 clamp()，这里再把双列结构收成单列，
+   1024 / 1280 这类窗口既不横向滚动，也不会把正文挤成一条窄缝。
+   ============================================================ */
+
+/* 下界固定 721px：Chrome 会把 720.01px 这类小数断点舍入成 720px，
+   实测 720px 视口因此同时命中手机块与本块，工具条被错设成 top:0，
+   与 60px 吸顶页头重叠。整数断点下 (720,721) 那段小数视口
+   由 <=1100px 的工具条块兜底，不会出现样式真空。 */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .article-body-wrap {
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  /* 侧栏落到正文下方，两块卡片并排，不再占正文宽度 */
+  .article-side {
+    position: static;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .article-side > * {
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+
+  .about-grid {
+    gap: 24px;
+  }
+
+  .about-card {
+    width: 270px;
+    padding: 26px 20px;
+  }
+
+  .hero-art {
+    height: 360px;
+  }
+
+  .featured-image {
+    height: 190px;
+  }
+
+  .works-columns,
+  .cat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .archive-columns {
+    gap: 24px;
+  }
+
+  .archive-side {
+    width: 220px;
+  }
+}
+
+/* 721–900px：页头六项导航 + 搜索按钮比较挤，收紧一点内边距 */
+@media (min-width: 721px) and (max-width: 900px) {
+  .nav-item {
+    padding: 6px 11px;
+    font-size: 13px;
+  }
+
+  .search-pill {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+/* 极窄屏（<=400px）规则移到文末 720px 断点之后，
+   否则其中 .section-title / .section-note 的字号会被后面的手机规则
+   覆盖成永远不会生效的死值。 */
+
+/* 大标题随窗口缩放，窄一点的桌面不会把一行中文顶出去 */
+.hero-title {
+  font-size: clamp(32px, 4vw, 54px);
+  line-height: 1.34;
+}
+
+/* ============================================================
+   桌面 / 手机 显隐
+   画布 D1（桌面）与 D3（手机）内容不完全相同，分开渲染。
+   display: revert 让元素恢复各自的默认显示类型
+   （div 回 block、span 回 inline），避免行内文字被撑成块级。
+   ============================================================ */
+
+.only-mobile {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .only-desktop {
+    display: none !important;
+  }
+
+  .only-mobile {
+    display: revert;
+  }
+
+  .only-mobile.hero,
+  .only-mobile.cat-pill-row {
+    display: flex;
+  }
+}
+

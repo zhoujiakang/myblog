@@ -1,0 +1,266 @@
+/* ============================================================
+   标签聚合页 —— #名 大字排版，频次分层
+   ============================================================ */
+
+/* 常用标签卡：#名 大字 + 篇数，# 号用 tone 色点缀 */
+.tag-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.tag-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 20px 22px;
+  background: #fff;
+  border-radius: var(--r-card-md);
+  box-shadow: var(--ring-lg), var(--sh-card);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tag-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ring-lg), 8px 8px 0 0 var(--border);
+}
+
+.tag-item-name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--ink);
+}
+
+.tag-item:hover .tag-item-name {
+  color: var(--blue-deep);
+}
+
+/* # 号：tone 色轮，这是「标签」的语义符号 */
+.tag-hash {
+  margin-right: 2px;
+}
+
+.tag-item--blue .tag-hash {
+  color: var(--blue);
+}
+.tag-item--mint .tag-hash {
+  color: #3aa88a;
+}
+.tag-item--yellow .tag-hash {
+  color: #d9a514;
+}
+.tag-item--lilac .tag-hash {
+  color: #8d7fe0;
+}
+
+.tag-item-count {
+  font-size: 12.5px;
+  color: var(--ink-faint-3);
+  line-height: normal;
+}
+
+.cat-card-more {
+  margin-top: auto;
+  padding-top: 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--blue-deep);
+  line-height: normal;
+}
+
+/* 项目 / 技能 左右两列 */
+.works-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+}
+
+.works-col {
+  padding: 0;
+  gap: 14px;
+}
+
+.work-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 22px 22px 22px 32px;
+  background: #fff;
+  border-radius: var(--r-card);
+  box-shadow: var(--ring-lg), var(--sh-card);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.work-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ring-lg), 8px 8px 0 0 var(--border);
+}
+
+/* 状态色轨：卡片左缘一条色带，扫一眼就知道状态 */
+.work-card::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 14px;
+  bottom: 14px;
+  width: 5px;
+  border-radius: 999px;
+  background: var(--ink-faint-2);
+}
+
+.work-card--doing::before {
+  background: var(--blue);
+}
+
+.work-card--todo::before {
+  background: var(--yellow);
+}
+
+.work-card--done::before {
+  background: var(--mint);
+}
+
+.work-card--paused::before {
+  background: var(--ink-faint-2);
+}
+
+/* 虚位以待：页脚式虚线条，横向低调占位 */
+.work-card--next {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: transparent;
+  box-shadow: none;
+  border: 2px dashed var(--ink-faint-2);
+  border-radius: var(--r-pill);
+  padding: 14px 26px;
+  margin-top: 26px;
+}
+
+.work-card--next::before {
+  display: none;
+}
+
+.work-card--next:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--blue);
+}
+
+.work-card--next .work-card-title {
+  font-size: 15px;
+  color: var(--ink-muted);
+}
+
+.work-card--next .work-card-summary {
+  font-size: 12.5px;
+}
+
+/* 技术标签 + 日期行 */
+.work-card-flags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+}
+
+.work-card-date {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-faint-3);
+  line-height: normal;
+}
+
+.work-card-title {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--ink);
+}
+
+.work-card:hover .work-card-title {
+  color: var(--blue-deep);
+}
+
+.work-card-summary {
+  font-size: 13px;
+  line-height: 23px;
+  color: var(--ink-muted-2);
+}
+
+/* 底部行动行：推到卡片底边，等高卡片下天然对齐 */
+.work-card-more {
+  margin-top: auto;
+  padding-top: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--blue-deep);
+  line-height: normal;
+}
+
+.work-card--next .work-card-more {
+  display: none;
+}
+
+.list-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 22px;
+  background: #fff;
+  border-radius: var(--r-card);
+  box-shadow: var(--ring-lg), var(--sh-card);
+}
+
+.list-card-main {
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.list-card-title {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--ink);
+}
+
+.list-card-title:hover {
+  color: var(--blue-deep);
+}
+
+.list-card-summary {
+  font-size: 13px;
+  line-height: 23px;
+  color: var(--ink-muted-2);
+}
+
+.list-card-meta {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-faint-3);
+  line-height: normal;
+}
+
+.list-card-date {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-faint-3);
+  line-height: normal;
+  white-space: nowrap;
+}
+

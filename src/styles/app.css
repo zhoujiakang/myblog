@@ -1,0 +1,19 @@
+/* 样式入口 —— 只负责按原顺序拼接各分域文件，级联顺序与拆分前一致：
+   base（全局/共享块）→ header → footer → blocks（通用卡）→ 各页面
+   → responsive-mid（平板/窄桌面与显隐）→ responsive-mobile（≤720px 全部覆盖）
+   → article-rail（窄桌面工具条）→ misc。
+   改样式请进对应文件；新增页面建议建 styles/pages/<name>.css 并在此登记。 */
+@import './base.css';
+@import './header.css';
+@import './footer.css';
+@import './blocks.css';
+@import './home.css';
+@import './article.css';
+@import './works.css';
+@import './categories.css';
+@import './tags.css';
+@import './archive.css';
+@import './responsive-mid.css';
+@import './responsive-mobile.css';
+@import './article-rail.css';
+@import './misc.css';

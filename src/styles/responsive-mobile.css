@@ -1,0 +1,809 @@
+/* ============================================================
+   手机端（画布 D3 规格）—— 窄屏整体切换
+   ============================================================ */
+
+@media (max-width: 720px) {
+  /* 页头（2:175） */
+  .site-header {
+    display: none;
+  }
+
+  .site-header.site-header--mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+    /* 左右 20px 与全站 --pad 一致，页头不再比正文窄 2px */
+    padding: 10px 20px;
+    /* 菜单展开时吸顶，滚动中也不会被带出视口 */
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--bg);
+  }
+
+  .brand {
+    gap: 9px;
+  }
+
+  .brand-avatar--sm {
+    width: 34px;
+    height: 34px;
+    box-shadow: var(--ring-xs);
+  }
+
+  .brand-name {
+    font-size: 18px;
+  }
+
+  /* Hero（2:180） */
+  .hero,
+  .hero--mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 20px 0;
+  }
+
+  .hero-left {
+    gap: 14px;
+  }
+
+  .hello {
+    padding: 5px 12px;
+  }
+
+  .hello-text {
+    font-size: 12px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+    line-height: 44px;
+  }
+
+  .hero-intro {
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 25px;
+  }
+
+  .hero-art {
+    width: 100%;
+    height: 250px;
+    align-self: stretch;
+    border-radius: 22px;
+    box-shadow: var(--ring-lg), 5px 5px 0 0 var(--border);
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 11px 20px;
+    font-size: 13.5px;
+    border-radius: 12px;
+    box-shadow: var(--ring-lg), 3px 3px 0 0 var(--border);
+  }
+
+  .btn:hover {
+    transform: none;
+    box-shadow: var(--ring-lg), 3px 3px 0 0 var(--border);
+  }
+
+  /* 桌面稿的大图精选区不进手机稿；手机自己的精简置顶卡例外 */
+  .featured:not(.featured--mobile) {
+    display: none;
+  }
+
+  /* 标题行（2:191 / 2:207） */
+  .section-row {
+    padding: 32px 20px 0;
+  }
+
+  .section-row--cats {
+    padding: 34px 20px 0;
+  }
+
+  .section-title-row {
+    gap: 8px;
+  }
+
+  .section-title-left {
+    gap: 8px;
+  }
+
+  .section-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+
+  .section-note {
+    font-size: 12px;
+  }
+
+  /* 区块容器（2:206 / 2:221 / 2:234） */
+  .section-block {
+    gap: 10px;
+    padding: 34px 20px 0;
+  }
+
+  .section-block--tight {
+    padding: 34px 20px 0;
+  }
+
+  .section-block--contact {
+    padding: 34px 20px 0;
+  }
+
+  .contact-wrap {
+    padding: 34px 20px 0;
+  }
+
+  /* 折腾记录：顶部改上下排，滑动区全宽，双列落单列 */
+  .works-top {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .works-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .cat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 文章卡区（2:206）—— 竖排，无横向滚动行为 */
+  .post-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 20px 0;
+    overflow: visible;
+    cursor: default;
+    scroll-snap-type: none;
+  }
+
+  .post-card {
+    width: 100%;
+    flex: none;
+    gap: 8px;
+    padding: 18px 20px;
+    border-radius: 20px;
+    box-shadow: var(--ring-lg), 4px 4px 0 0 var(--border);
+  }
+
+  .post-card .pill {
+    padding: 3px 10px;
+    font-size: 11px;
+  }
+
+  .post-card-title {
+    width: 100%;
+    font-size: 16.5px;
+    line-height: 26px;
+  }
+
+  /* 分类胶囊区（2:212）—— 手机稿是独立区块，与桌面分类区不同 */
+  .cat-pill-row--block {
+    padding: 14px 20px 0;
+    gap: 10px;
+  }
+
+  .cat-pill-row .pill {
+    padding: 8px 16px;
+    font-size: 13px;
+    box-shadow: var(--ring-xs);
+  }
+
+  /* 联系卡（2:235） */
+  .contact-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 22px;
+    border-radius: 22px;
+    box-shadow: var(--ring-lg), 4px 4px 0 0 var(--border);
+  }
+
+  .contact-title {
+    font-size: 19px;
+  }
+
+  .contact-desc {
+    width: 100%;
+  }
+
+  /* 页脚（2:239） */
+  .site-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 34px 20px 30px;
+  }
+
+  .site-footer-line {
+    font-size: 11px;
+  }
+
+  /* 文章详情 */
+  .article-head {
+    padding: 30px 20px 0;
+    gap: 14px;
+  }
+
+  .article-title {
+    width: 100%;
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  /* 标签多的详情页（如折腾记录有 5 个胶囊）在 320px 会撑出横向溢出，允许换行 */
+  .article-tag-row {
+    flex-wrap: wrap;
+    gap: 8px 10px;
+  }
+
+  .article-meta {
+    font-size: 12px;
+  }
+
+  .article-body-wrap {
+    display: block;
+    padding: 28px 20px 0;
+  }
+
+  .article-body {
+    gap: 18px;
+  }
+
+  .article-lead,
+  .article-paragraph,
+  .article-list-item,
+  .article-quote,
+  .article-code,
+  .article-figure,
+  .article-figure img,
+  .article-caption {
+    width: 100%;
+  }
+
+  .article-lead {
+    font-size: 16px;
+    line-height: 29px;
+  }
+
+  .article-subtitle-text {
+    font-size: 20px;
+  }
+
+  .article-subheading {
+    font-size: 17px;
+    line-height: 27px;
+    margin-top: 4px;
+  }
+
+  .article-paragraph {
+    font-size: 15px;
+    line-height: 28px;
+  }
+
+  .article-list-item {
+    font-size: 14.5px;
+    line-height: 26px;
+  }
+
+  .article-quote {
+    padding: 16px 18px;
+    border-radius: 16px;
+  }
+
+  .article-quote p {
+    width: 100%;
+    font-size: 15.5px;
+    line-height: 27px;
+  }
+
+  .article-code {
+    padding: 16px 18px;
+    border-radius: 14px;
+  }
+
+  .article-code pre {
+    font-size: 12.5px;
+    line-height: 24px;
+  }
+
+  .article-figure img {
+    height: 220px;
+  }
+
+  /* 移动端侧栏落在正文之后（块布局），整栏不需要吸附；
+     只留「接着读」，目录已经挪到顶部工具条 */
+  .article-side {
+    position: static;
+    width: 100%;
+    margin-top: 28px;
+  }
+
+  /* 顶部工具条（返回 + 目录）与桌面侧栏目录的切换统一放在文末
+     @media (max-width:1100px)：手机与 721–1100px 平板共用一套，
+     手机侧栏只留「接着读」。 */
+
+  .prev-next {
+    display: block;
+    padding: 34px 20px 0;
+  }
+
+  .prev-next-card + .prev-next-card {
+    margin-top: 12px;
+  }
+
+  /* 其余栏目 */
+  .page-head {
+    padding: 30px 20px 0;
+  }
+
+  .page-title {
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  .page-desc {
+    font-size: 14px;
+  }
+
+  .list-wrap,
+  .grid-cards {
+    padding: 24px 20px 0;
+  }
+
+  .list-row + .list-row {
+    margin-top: 12px;
+  }
+
+  .list-card {
+    display: block;
+  }
+
+  .list-card-date {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* 归档：壳收窄，双列落单列 */
+  .archive-shell {
+    padding: 0 20px;
+  }
+
+  .archive-columns {
+    flex-direction: column;
+    gap: 0;
+    /* 上面是 tab 切换条（margin-top 14px），列间距随之收紧 */
+    margin-top: 14px;
+  }
+
+  .archive-side {
+    position: static;
+    transform: none;
+    width: 100%;
+    /* 桌面靠 margin-left:auto 贴右边界，手机单列时归零 */
+    margin-left: 0;
+    margin-top: 28px;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .cal-cell {
+    height: 36px;
+  }
+
+  .archive-main {
+    max-width: none;
+  }
+
+  .archive-timeline {
+    padding-left: 26px;
+  }
+
+  .timeline-node {
+    left: -23px;
+  }
+
+  /* 手机端关于页：单列 + 顶部 12px。
+     左右留白由父级 .list-wrap 统一给 20px，这里不再叠加，
+     也不在后面的微调块里反复覆盖同一个选择器。 */
+  .about-grid {
+    display: block;
+    padding: 12px 0 0;
+  }
+
+  .about-media {
+    width: 100%;
+    margin-bottom: 22px;
+  }
+
+  /* ============================================================
+     手机端紧凑度微调
+     手机稿沿用桌面稿的大间距，实测 390px 下区块之间普遍空 30–34px、
+     卡片内边距 22px，一屏看不到多少内容。这里把所有间距统一收一档，
+     只在本断点内生效，桌面稿完全不动。
+     ============================================================ */
+
+  /* 页头高度与左右留白由 --header-h / --pad 统一，
+     不用在这里再写一份同选择器的旧值 */
+
+  /* 区块级间距：30–34px → 22px */
+  .section-row,
+  .section-row--cats,
+  .section-block,
+  .section-block--tight,
+  .section-block--contact,
+  .contact-wrap,
+  .prev-next,
+  .site-footer {
+    padding-top: 22px;
+  }
+
+  .section-block,
+  .section-block--tight,
+  .section-block--contact {
+    gap: 8px;
+  }
+
+  .site-footer {
+    padding-bottom: 22px;
+  }
+
+  /* 归档页头基础样式优先级更高（.archive-shell .page-head），一并覆盖 */
+  .page-head,
+  .archive-shell .page-head,
+  .article-head {
+    padding-top: 20px;
+  }
+
+  .page-head {
+    gap: 12px;
+  }
+
+  .works-top {
+    gap: 16px;
+  }
+
+  .list-wrap,
+  .grid-cards {
+    padding-top: 16px;
+  }
+
+  .article-body-wrap {
+    padding-top: 20px;
+    /* 手机端是 display:block，桌面双列的 44px gap 是遗留值 */
+    gap: 0;
+  }
+
+  .article-body {
+    gap: 14px;
+  }
+
+  .article-side,
+  .archive-side {
+    margin-top: 20px;
+  }
+
+  .about-media {
+    margin-bottom: 16px;
+  }
+
+  .list-row + .list-row {
+    margin-top: 10px;
+  }
+
+  /* ---- 首页 hero ---- */
+  .hero,
+  .hero--mobile {
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .hero-left {
+    gap: 10px;
+  }
+
+  .hero-title {
+    font-size: 30px;
+    line-height: 40px;
+  }
+
+  .hero-intro {
+    font-size: 13.5px;
+    line-height: 23px;
+  }
+
+  /* 桌面稿的 max-width: 42% 在手机端没被解除，插画被压成 164px 的竖条，
+     右边空出一大片。这里放开宽度并改成横幅，人物靠中部对齐 */
+  .hero-art {
+    max-width: none;
+    height: 200px;
+    background-position: center 42%;
+    border-radius: 18px;
+  }
+
+  .hero-actions {
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 10px 17px;
+    font-size: 13px;
+  }
+
+  .post-grid {
+    padding-top: 10px;
+    gap: 10px;
+  }
+
+  .post-card {
+    padding: 14px 17px;
+    gap: 6px;
+  }
+
+  .cat-pill-row--block {
+    padding-top: 10px;
+    gap: 8px;
+  }
+
+  .contact-card {
+    padding: 18px;
+    gap: 6px;
+  }
+
+  /* ---- 各类卡片内边距统一收一档 ---- */
+  .list-card {
+    padding: 16px 18px;
+  }
+
+  .list-card-date {
+    margin-bottom: 6px;
+  }
+
+  .cat-grid,
+  .tag-grid,
+  .works-columns {
+    gap: 12px;
+  }
+
+  .cat-card {
+    gap: 8px;
+    padding: 16px 18px 16px 26px;
+  }
+
+  .tag-item {
+    gap: 4px;
+    padding: 13px 18px;
+  }
+
+  .work-card {
+    gap: 8px;
+    padding: 16px 18px 16px 26px;
+  }
+
+  /* 桌面是左右两栏的虚线占位卡，手机窄屏挤成两列文字，改为上下排列 */
+  .work-card--next {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 20px;
+    margin-top: 16px;
+    border-radius: var(--r-card);
+  }
+
+  .about-card {
+    gap: 9px;
+    padding: 22px 20px;
+  }
+
+  .prev-next-card {
+    padding: 16px 18px;
+  }
+
+  .side-card {
+    padding: 15px 17px;
+  }
+
+  .cal-cell {
+    height: 28px;
+  }
+
+  .article-lead {
+    line-height: 27px;
+  }
+
+  .article-paragraph {
+    line-height: 27px;
+  }
+
+  /* ---- 归档 ---- */
+  /* 月份数字用 ZCOOL KuaiLe 渲染时，9 / 7 / 11 在小字号下容易看混；
+     手机端换成正文体加粗，年份大字仍保留手写体作装饰。 */
+  .timeline-month-name {
+    font-family: var(--font-body);
+    font-weight: 700;
+  }
+
+  .archive-timeline {
+    gap: 22px;
+    margin-top: 20px;
+  }
+
+  .timeline-month-head {
+    margin-bottom: 8px;
+  }
+
+  .archive-side {
+    gap: 12px;
+  }
+
+  .cal-head {
+    margin-bottom: 8px;
+  }
+
+  .cal-foot {
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+
+  /* ============================================================
+     手机端版式对称
+     只保证容器、卡片严格左右对称；标题、说明、正文一律左对齐，
+     不做文字居中。所有规则只在手机断点内生效，桌面稿保持原样。
+     ============================================================ */
+
+  /* 档案卡桌面是固定 320px，手机改成上下堆叠后没解除，会贴左且右侧多空一截。
+     about-grid 的左右留白已归零，避免和父级 .list-wrap 各叠一层 20px。 */
+  .about-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* ---- 关于 / 归档页 tab 切换 ----
+     两块共用一块区域，手机端不再上下堆叠成一长条；
+     归档页文章越多时间线越长，日历与节奏必须一按就到。 */
+  .about-tabs,
+  .archive-tabs {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .about-tab,
+  .archive-tab {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 10px;
+    border-radius: var(--r-pill);
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    line-height: normal;
+    box-shadow: var(--ring-xs);
+    transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+  }
+
+  .about-tab--active,
+  .archive-tab--active {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: var(--ring-lg);
+  }
+
+  .about-grid[data-tab='card'] .about-text,
+  .about-grid[data-tab='text'] .about-card {
+    display: none;
+  }
+
+  /* 归档 tab：只显示当前面板；切换到时间线时去掉侧栏的原 margin-top */
+  .archive-columns[data-tab='side'] .archive-main,
+  .archive-columns[data-tab='timeline'] .archive-side {
+    display: none;
+  }
+
+  .archive-columns[data-tab='side'] .archive-side {
+    margin-top: 0;
+  }
+
+  /* ============================================================
+     手机端统一两侧边界
+     页面级容器（.list-wrap / .page-head / .section-row / .article-head …）
+     已经给出 20px 左右留白，嵌套在里面的区块不得再叠一层 padding，
+     否则会出现「页头宽、下面窄」。flex 列方向 align-items: flex-start
+     还会让子块按内容宽度收缩，也要显式撑满，保证左右都是 20px。
+     ============================================================ */
+  .list-wrap .section-block,
+  .list-wrap .section-block--tight,
+  .list-wrap .section-block--contact {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .works-slider {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hero-left,
+  .archive-main {
+    width: 100%;
+  }
+
+  /* 单列 grid 的 1fr 会被 nowrap 内容的 min-content 撑宽：320px 下分类卡
+     曾被撑到 350px，连布局视口一起撑大。允许列收缩到 0，长标题自然省略。 */
+  .cat-grid,
+  .works-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cat-card {
+    min-width: 0;
+  }
+
+  /* 手机端精简置顶卡：不带插画，与桌面共用 featured 数据，
+     补上原本手机首页缺失的置顶入口，同时保持紧凑。 */
+  .featured--mobile {
+    padding-top: 14px;
+  }
+
+  .featured-card--mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    padding: 14px 16px;
+    border-radius: var(--r-card);
+    box-shadow: var(--ring-lg), var(--sh-mobile);
+  }
+
+  .featured-card--mobile .pill {
+    padding: 3px 10px;
+    font-size: 11px;
+  }
+
+  .featured-title--mobile {
+    font-size: 19px;
+    line-height: 26px;
+  }
+
+  .featured-summary--mobile {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: 12.5px;
+    line-height: 21px;
+  }
+
+  .featured-card--mobile .featured-link {
+    font-size: 13px;
+  }
+}
+
+/* 极窄屏（<=400px）：区块说明不换行，避免「{n} 个方向」被挤成两行。
+   放在所有 720px 规则之后才不会被覆盖；字号统一沿用手机断点里的值，
+   不再在这里写一份永远不会生效的死值。 */
+@media (max-width: 400px) {
+  .section-note {
+    white-space: nowrap;
+  }
+}
+

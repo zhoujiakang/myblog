@@ -1,0 +1,229 @@
+/* ============================================================
+   组件与页面样式 —— 数值全部对齐 Ardot 画布 745266242267085
+
+   【描边的实现口径】
+   画布里的描边骑在节点边界上（内外各半），因此节点的尺寸
+   = 内容 + 内边距，描边不占尺寸。CSS 的 border 会额外撑大盒子，
+   所以这里统一改用 inset 阴影画描边，盒子尺寸口径与画布一致。
+   ============================================================ */
+
+/* ============================================================
+   全局
+   ============================================================ */
+
+/* 滚动条占位：有些页面长、有些短，若滚动条随内容出现/消失，
+   布局宽度会在切换页面时横跳 ~15px。
+   scrollbar-gutter: stable 让浏览器始终预留滚动条槽位：
+   - 占位型滚动条（Windows / macOS「始终显示」）：宽度恒定 ✓
+   - overlay 型滚动条（macOS 默认 / Safari）：gutter 为 0，无副作用 ✓
+   注意不用 overflow-y: scroll，它会让无滚动需求的页面也
+   显示一条常驻的灰色滚动条轨道。 */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* ============================================================
+   区块通用（画布 2:37 / 2:42 / 2:61 / 2:78 / 2:104）
+   ============================================================ */
+
+/* 标题行：左标题 + 右说明，横向 space-between */
+.section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 56px var(--pad-section) 0;
+}
+
+/* 纵向区块容器 */
+.section-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 56px var(--pad-section) 0;
+}
+
+.section-block--tight {
+  padding: 52px var(--pad-section) 0;
+}
+
+.section-block--contact {
+  gap: 0;
+}
+
+/* 标题行内部：色块 + 标题 | 说明 */
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+}
+
+/* 标题行作为 .section-row 的左侧子项时不能写死 width:100%，
+   否则会把右侧的箭头导航压成竖排两行。改为占据剩余空间。 */
+.section-row > .section-title-row {
+  width: auto;
+  flex: 1 1 auto;
+}
+
+.section-title-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.section-dot {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: var(--r-dot-sm);
+  box-shadow: var(--ring-sm);
+}
+
+.section-dot--blue {
+  background: var(--blue);
+}
+.section-dot--mint {
+  background: var(--mint);
+}
+.section-dot--yellow {
+  background: var(--yellow);
+}
+
+.section-title {
+  font-size: 26px;
+  color: var(--ink);
+  line-height: normal;
+}
+
+.section-note {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  line-height: normal;
+}
+
+/* 卡片行：画布 2:42，三列等分，顶部对齐 */
+.post-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  /* 横向滚动：卡片固定宽度，超出部分左右滑动查看。
+     滚动条隐藏，鼠标用户靠按住拖拽 / 右上角箭头浏览。 */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-left: var(--pad-section);
+  padding: 18px var(--pad-section) 14px;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.post-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.post-grid:active {
+  cursor: grabbing;
+}
+
+/* 标题行右侧的箭头导航（最近在写）：按内容宽度占位，不被标题压扁 */
+.row-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  margin-left: 16px;
+  white-space: nowrap;
+}
+
+.row-nav .section-note,
+.row-all {
+  white-space: nowrap;
+}
+
+.row-arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-pill);
+  box-shadow: var(--ring-sm), 2px 2px 0 0 var(--border);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--ink);
+  transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+
+.row-arrow:hover:not(:disabled) {
+  background: var(--blue);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.row-arrow:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.row-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.row-all {
+  margin-left: 6px;
+  color: var(--blue-deep);
+}
+
+/* 分类胶囊行：画布 2:67，可换行 */
+.cat-pill-row {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+/* 联系区外壳：画布 2:104 / 2:234 */
+.contact-wrap {
+  padding: 56px var(--pad-section) 0;
+}
+
+/* ============================================================
+   其余栏目（画布未覆盖，按同一套视觉系统补齐）
+   ============================================================ */
+
+.page-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 46px var(--pad-wide) 0;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 62px;
+  color: var(--ink);
+}
+
+.page-desc {
+  font-size: 15px;
+  line-height: 26px;
+  color: var(--ink-muted);
+}
+
+.list-wrap {
+  padding: 36px var(--pad-wide) 0;
+}
+
+.list-row + .list-row {
+  margin-top: 20px;
+}
+

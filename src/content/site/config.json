@@ -1,0 +1,74 @@
+{
+  "categoryTones": {
+    "技术": "blue",
+    "工程": "blue",
+    "阅读": "mint",
+    "生活": "yellow",
+    "写作": "lilac",
+    "项目": "plain"
+  },
+  "tonePalette": [
+    "blue",
+    "mint",
+    "yellow",
+    "lilac"
+  ],
+  "defaultTone": "plain",
+  "kinds": {
+    "project": "项目",
+    "skill": "技能"
+  },
+  "defaults": {
+    "kind": "项目",
+    "status": "在搞"
+  },
+  "kindTones": {
+    "项目": "blue",
+    "技能": "mint"
+  },
+  "statusTones": {
+    "想做": "yellow",
+    "在搞": "blue",
+    "搞定": "mint",
+    "摸了": "plain"
+  },
+  "statusOrder": {
+    "在搞": 0,
+    "想做": 1,
+    "摸了": 2,
+    "搞定": 3
+  },
+  "plannedOrder": {
+    "在搞": 0,
+    "想做": 1,
+    "摸了": 2
+  },
+  "statusModifiers": {
+    "想做": "todo",
+    "在搞": "doing",
+    "搞定": "done",
+    "摸了": "paused"
+  },
+  "tagTones": [
+    "blue",
+    "mint",
+    "yellow",
+    "lilac"
+  ],
+  "worksStatuses": {
+    "planned": [
+      "在搞",
+      "想做"
+    ],
+    "done": "搞定"
+  },
+  "relatedLimit": 4,
+  "recentHomeCount": 6,
+  "recentMobileCount": 2,
+  "categoriesMobileCount": 4,
+  "topTagsCount": 3,
+  "topTagsCloudCount": 8,
+  "barUnitPx": 56,
+  "wordsPerMinute": 400,
+  "tocLineRatio": 0.32
+}

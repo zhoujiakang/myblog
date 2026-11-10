@@ -1,0 +1,28 @@
+/* ============================================================
+   交互细节补充
+   ============================================================ */
+
+/* 浮层（搜索 / 手机菜单 / 文章目录）打开时锁背景滚动。
+   scrollbar-gutter: stable 已有，解锁回原位置不会横向跳动 */
+html.scroll-locked {
+  overflow: hidden;
+}
+
+/* BackLink 在历史栈可用时渲染为 button：重置浏览器默认外观，
+   与 Link(a) 共用同一套卡片 / 文字样式 */
+button.article-rail-back,
+button.prev-next-card {
+  appearance: none;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+/* 程序化聚焦（搜索跳转后聚焦标题）不画焦点环：
+   :focus-visible 只服务键盘用户，这里避免标题上出现大蓝框 */
+[tabindex='-1']:focus {
+  outline: none;
+}

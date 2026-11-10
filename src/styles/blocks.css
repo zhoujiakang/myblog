@@ -1,0 +1,228 @@
+/* ============================================================
+   胶囊 / 标签（画布 2:44 / 2:68 / 2:213）
+   ============================================================ */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  background: #fff;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: normal;
+  white-space: nowrap;
+  box-shadow: var(--ring-lg);
+}
+
+.pill--sm {
+  padding: 4px 12px;
+  font-size: 11.5px;
+  box-shadow: var(--ring-sm);
+}
+
+.pill--blue {
+  background: var(--blue-soft);
+}
+.pill--mint {
+  background: var(--mint);
+}
+.pill--yellow {
+  background: var(--yellow);
+}
+.pill--lilac {
+  background: var(--lilac);
+}
+.pill--plain {
+  background: #fff;
+}
+
+/* ============================================================
+   文章卡（画布 2:43 / 2:196）
+   ============================================================ */
+
+.post-card {
+  /* 固定宽度不再挤压：一行放不下的卡片通过 .post-grid 横向滚动查看 */
+  flex: 0 0 384px;
+  scroll-snap-align: start;
+  user-select: none;
+  /* 整卡可点：卡片本身是 <a>，悬停给一点上浮反馈 */
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  -webkit-user-drag: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 22px;
+  background: #fff;
+  border-radius: var(--r-card);
+  box-shadow: var(--ring-lg), var(--sh-card);
+}
+
+.post-card-title {
+  width: 100%;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--ink);
+}
+
+.post-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ring-lg), 8px 8px 0 0 var(--border);
+}
+
+.post-card-summary {
+  width: 100%;
+  font-size: 13px;
+  line-height: 23px;
+  color: var(--ink-muted-2);
+}
+
+.post-card-meta {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-faint-3);
+  line-height: normal;
+}
+
+/* ============================================================
+   近期目标（原「最近在做什么」热力图版块改造）
+   ============================================================ */
+
+.goal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.goal-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 9px 18px 9px 12px;
+  background: #fff;
+  border-radius: var(--r-pill);
+  box-shadow: var(--ring-sm), 2px 2px 0 0 var(--border);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.goal-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ring-sm), 4px 4px 0 0 var(--border);
+}
+
+/* 复选框：方形小格，完成时填蓝打勾 */
+.goal-check {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-dot);
+  box-shadow: var(--ring-xs);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+}
+
+.goal-text {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  line-height: normal;
+}
+
+/* ============================================================
+   联系卡（画布 2:105 / 2:235）
+   ============================================================ */
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 34px 36px;
+  background: var(--contact-bg);
+  border-radius: 28px;
+  box-shadow: var(--ring-lg), var(--sh-featured);
+}
+
+.contact-left {
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.contact-title {
+  font-size: 24px;
+  color: var(--ink);
+  line-height: normal;
+}
+
+.contact-desc {
+  width: 100%;
+  max-width: 560px;
+  font-size: 14.5px;
+  line-height: 26px;
+  color: var(--ink-muted);
+}
+
+.contact-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+
+/* ============================================================
+   空状态 —— 内容为空时的占位卡：虚线框 + 三个小点 + 提示文案
+   ============================================================ */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 44px 20px;
+  border: 2px dashed var(--border);
+  border-radius: var(--r-card-md);
+  background: rgba(255, 255, 255, 0.55);
+  text-align: center;
+}
+
+.empty-state-doodle {
+  display: flex;
+  gap: 6px;
+}
+
+.empty-state-doodle span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: #fff;
+}
+
+.empty-state-doodle span:nth-child(2) {
+  background: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.empty-state p {
+  margin: 0;
+  max-width: 340px;
+  font-size: 13.5px;
+  line-height: 22px;
+  color: var(--ink-faint-2);
+}

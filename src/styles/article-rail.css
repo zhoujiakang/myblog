@@ -1,0 +1,187 @@
+/* ============================================================
+   文章工具条（返回 + 目录）—— 手机与 721–1100px 窄桌面共用
+   目录是「读之前、读之中」要用的，返回随时会点；两者堆在正文末尾
+   等于用不上。原来只覆盖 <=720px，768 / 900px 的平板仍是读完才见目录，
+   这里把断点扩到 1100px，>1100px 才交回右侧吸附的 .toc。
+   ============================================================ */
+@media (max-width: 1100px) {
+  .article-rail {
+    display: block;
+    position: sticky;
+    top: var(--header-h);
+    z-index: 20;
+    padding: 0 var(--pad);
+    background: var(--bg);
+    border-bottom: 1px solid rgba(27, 42, 74, 0.12);
+  }
+
+  .article-rail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 42px;
+  }
+
+  .article-rail-back {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /* 文字只有 19px 高：撑满工具条行高，整行都可点 */
+    padding: 14px 0;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: normal;
+    color: var(--blue-deep);
+  }
+
+  .article-rail-toggle {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 11px;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: #fff;
+    box-shadow: var(--ring-sm);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: normal;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  /* 药丸本体保持小尺寸，命中区向外扩一圈 */
+  .article-rail-toggle::after {
+    content: '';
+    position: absolute;
+    inset: -9px -11px;
+    border-radius: var(--r-pill);
+  }
+
+  .article-rail--open .article-rail-toggle {
+    background: var(--blue-soft);
+    color: var(--blue-deep);
+  }
+
+  .article-rail-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-faint);
+  }
+
+  .article-rail-chevron {
+    width: 7px;
+    height: 7px;
+    margin-top: -3px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.16s ease;
+  }
+
+  .article-rail--open .article-rail-chevron {
+    margin-top: 1px;
+    transform: rotate(225deg);
+  }
+
+  /* 面板绝对定位浮在工具条下方：不占文档流，展开时正文不下移，
+     点小节跳转后收起也不会让落点偏移 */
+  .article-rail-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: var(--pad);
+    right: var(--pad);
+    max-height: min(52vh, 340px);
+    overflow-y: auto;
+    padding: 8px;
+    background: #fff;
+    border-radius: var(--r-card-md);
+    box-shadow: var(--ring-lg);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .article-rail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .article-rail-link {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 20px;
+    color: var(--ink-muted-2);
+  }
+
+  .article-rail-link--active {
+    background: var(--blue-soft);
+    font-weight: 700;
+    color: var(--blue-deep);
+  }
+
+  .article-rail-index {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-faint-2);
+  }
+
+  .article-rail-link-text {
+    min-width: 0;
+  }
+
+  .article-rail-backdrop {
+    display: block;
+    position: fixed;
+    inset: var(--header-h) 0 0;
+    z-index: 15;
+    background: rgba(27, 42, 74, 0.2);
+  }
+
+  /* 跳转小节时给吸顶页头（--header-h）+ 工具条（42px）让出高度 */
+  .article-subtitle-text {
+    scroll-margin-top: calc(var(--header-h) + 56px);
+  }
+
+  /* 顶部工具条已经有目录与返回，桌面侧栏目录和底部返回卡不再重复 */
+  .toc {
+    display: none;
+  }
+
+  .prev-next-card--back {
+    display: none;
+  }
+}
+
+/* 721–1100px：桌面页头不吸顶，工具条改吸在视口顶端；
+   目录隐藏后侧栏只剩「接着读」，限宽避免被拉成整行超宽卡。 */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .article-rail {
+    top: 0;
+  }
+
+  .article-rail-backdrop {
+    inset: 0 0 0;
+  }
+
+  .article-subtitle-text {
+    scroll-margin-top: 62px;
+  }
+
+  .article-side > .side-related {
+    flex: 0 1 380px;
+  }
+}

@@ -1,0 +1,142 @@
+/* ============================================================
+   折腾记录页 —— 页头（标题左 / 统计与说明右下）+ bento 网格
+   ============================================================ */
+
+.works-top {
+  /* 显式覆盖 .page-head 的 column —— 左侧介绍块，右侧在搞滑动区 */
+  flex-direction: row;
+  align-items: stretch;
+  gap: 40px;
+}
+
+.works-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.works-slider {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding: 4px 8px 10px 4px;
+  scrollbar-width: none;
+}
+
+.works-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.works-slider .work-card {
+  /* 窄屏时卡片跟着视口收窄，保证至少完整露出一张，
+     320px 的手机上也不会被裁掉半截标题 */
+  flex: 0 0 min(320px, calc(100% - 12px));
+  scroll-snap-align: start;
+}
+
+.works-desc {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  line-height: 20px;
+}
+
+.work-stats {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.work-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.work-stat-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: normal;
+}
+
+.work-stat-total {
+  font-size: 13px;
+  color: var(--ink-faint);
+  line-height: normal;
+}
+
+/* 大状态徽章：与普通小胶囊拉开层级，一眼可辨 */
+.work-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: normal;
+  box-shadow: var(--ring-sm);
+}
+
+.work-status--doing {
+  background: var(--blue);
+  color: #fff;
+}
+
+.work-status--todo {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+.work-status--done {
+  background: var(--mint);
+  color: var(--ink);
+}
+
+.work-status--paused {
+  background: #fff;
+  color: var(--ink-muted);
+}
+
+/* 组标签行：在搞 / 搞定的小节徽章 */
+.work-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
+
+.work-group + .work-group {
+  margin-top: 8px;
+}
+
+/* 组内网格：卡片够宽就两列，窄了自动落成一列 */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* 「接下来想做的」滑动区所在列 */
+.works-planned {
+  margin-bottom: 10px;
+}
+
+.works-slider .work-card--next {
+  margin-top: 0;
+}
+
+/* 分列空态提示 */
+.works-empty {
+  font-size: 13px;
+  color: var(--ink-faint-2);
+  line-height: normal;
+}
+
